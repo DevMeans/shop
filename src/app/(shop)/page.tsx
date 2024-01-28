@@ -1,10 +1,13 @@
 import { titlefont } from "@/config/fonts";
+import { Title } from '../../components/ui/titlle/Title';
+import { initialData } from "@/seed/seed";
+
+const producto = initialData.products;
 
 export default function Home() {
   return (
-    <div className="">
-      <h1>Hola mundo</h1>
-      <h1 className={ `${titlefont.className} font-bold`}>Hola mundo</h1>
-    </div>
+    <>
+      <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
+    </>
   );
 }
