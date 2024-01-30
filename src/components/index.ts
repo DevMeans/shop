@@ -5,6 +5,9 @@ export * from './ui/titlle/Title'
 export * from './ui/sidebar/Sidebar'
 
 
+
+export * from './ui/footer/Footer'
+
 export * from './products/product-grid/ProducGrid'
 export * from './products/product-grid/ProductGridItem'
 
