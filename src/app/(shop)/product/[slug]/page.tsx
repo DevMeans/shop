@@ -1,6 +1,9 @@
 import { titlefont } from "@/config/fonts";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
+import { SizeSelector } from '@/components/product/size-selector/SizeSelector';
+import { QuantitySelector } from "@/components";
+
 
 interface Props {
   params: {
@@ -29,8 +32,10 @@ export default function ProductoIdPage({ params }: Props) {
           ${product.price}
         </p>
         {/*Selector de tallas*/}
-        {/*Selector de cantidad*/}
+        <SizeSelector selectorSize={product.sizes[1]} availableSizes={product.sizes} ></SizeSelector>
 
+        {/*Selector de cantidad*/}
+        <QuantitySelector quatity={2}/>
         <button className="btn-primary my-5">
           Agregar al carrito
         </button>
