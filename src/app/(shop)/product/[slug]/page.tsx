@@ -3,6 +3,7 @@ import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import { SizeSelector } from '@/components/product/size-selector/SizeSelector';
 import { QuantitySelector } from "@/components";
+import { ProductSlideShow } from '../../../../components/product/slideshow/ProductSlideShow';
 
 
 interface Props {
@@ -18,10 +19,10 @@ export default function ProductoIdPage({ params }: Props) {
     notFound()
   }
   return (
-    <div className="mt-5 mb-20 grid md:grid-cols-3 gap-3">
+    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-5 gap-3 mx-auto">
       {/*SlideShow*/}
-      <div className="col-span-1 md:col-span-2 ">
-        hola
+      <div className="col-span-1 md:col-span-2 md:col-start-2">
+        <ProductSlideShow title={product.title} images={product.images} />
       </div>
       {/*Detalles*/}
       <div className="col-span-1 px-5">
@@ -32,10 +33,11 @@ export default function ProductoIdPage({ params }: Props) {
           ${product.price}
         </p>
         {/*Selector de tallas*/}
-        <SizeSelector selectorSize={product.sizes[1]} availableSizes={product.sizes} ></SizeSelector>
-
+        <SizeSelector
+          selectorSize={product.sizes[1]}
+          availableSizes={product.sizes} />
         {/*Selector de cantidad*/}
-        <QuantitySelector quatity={2}/>
+        <QuantitySelector quatity={2} />
         <button className="btn-primary my-5">
           Agregar al carrito
         </button>
