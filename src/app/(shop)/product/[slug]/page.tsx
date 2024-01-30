@@ -2,7 +2,7 @@ import { titlefont } from "@/config/fonts";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import { SizeSelector } from '@/components/product/size-selector/SizeSelector';
-import { QuantitySelector } from "@/components";
+import { ProductMobileSlides, QuantitySelector } from "@/components";
 import { ProductSlideShow } from '../../../../components/product/slideshow/ProductSlideShow';
 
 
@@ -19,10 +19,11 @@ export default function ProductoIdPage({ params }: Props) {
     notFound()
   }
   return (
-    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-5 gap-3 mx-auto">
+    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 mx-auto">
       {/*SlideShow*/}
-      <div className="col-span-1 md:col-span-2 md:col-start-2">
-        <ProductSlideShow title={product.title} images={product.images} />
+      <div className="col-span-1 md:col-span-1 xl:col-start-2 xl:col-span-2">
+        <ProductMobileSlides title={product.title} images={product.images} className="block md:hidden" />
+        <ProductSlideShow title={product.title} images={product.images} className="hidden md:block" />
       </div>
       {/*Detalles*/}
       <div className="col-span-1 px-5">
