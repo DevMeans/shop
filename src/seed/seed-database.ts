@@ -1,13 +1,17 @@
 import { initialData } from "./seed"
+import prisma from '../lib/prisma'
 
-
-async function main(){
-    console.log('Seed ejecutado correctamente');
-
-    console.log(initialData);
+async function main() {
+    //Borrar productos previos
+    await Promise.all([
+        prisma.productImage.deleteMany(),
+        prisma.product.deleteMany(),
+        prisma.category.deleteMany()
+    ])
+    console.log('Seed ejecutado correctamente')
 }
 
-(()=>{
-    if(process.env.NODE_ENV==='production') return;
+(() => {
+    if (process.env.NODE_ENV === 'production') return;
     main()
 })()
