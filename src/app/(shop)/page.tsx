@@ -1,15 +1,24 @@
-import { titlefont } from "@/config/fonts";
+
 import { Title } from '../../components/ui/titlle/Title';
-import { initialData } from "@/seed/seed";
+
 import { ProducGrid } from "@/components";
+import { getPaginatedProductsWithImages } from "@/actions";
 
-const products = initialData.products;
 
-export default function Home() {
+export default async function Home() {
+
+  const { products } =await getPaginatedProductsWithImages();
+  console.log(products)
   return (
     <>
-      <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
-      <ProducGrid products={products}></ProducGrid>
+      <Title
+        title="Tienda"
+        subtitle="Todos los productos"
+        className="mb-2" />
+      <ProducGrid
+        products={products}
+      >
+      </ProducGrid>
     </>
   );
 }
