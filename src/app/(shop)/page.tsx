@@ -3,12 +3,22 @@ import { Title } from '../../components/ui/titlle/Title';
 
 import { ProducGrid } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
+import { redirect } from 'next/navigation';
 
 
-export default async function Home() {
+interface Props {
+  searchParams: {
+    page?: string
+  }
+}
 
-  const { products } =await getPaginatedProductsWithImages();
-  console.log(products)
+export default async function Home({ searchParams }: Props) {
+
+  const page = searchParams.page ? parseInt(searchParams.page) : 1
+  const { products } = await getPaginatedProductsWithImages({page});
+  if(products.length===0){
+    redirect('/')
+  }
   return (
     <>
       <Title

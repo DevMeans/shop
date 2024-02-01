@@ -18,7 +18,6 @@ export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 export type ValidType = 'shirts' | 'pants' | 'hoodies' | 'hats';
 
 export interface productfindmanyinterface {
-    
         id: string,
         title: string,
         description: string,
