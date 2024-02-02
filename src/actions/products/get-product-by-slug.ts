@@ -1,6 +1,5 @@
 import { productfindmanyinterface } from "@/interfaces";
 import prisma from '@/lib/prisma';
-import { ProductImage } from "@prisma/client";
 
 
 export const getproductbyslug = async (slug: string) => {

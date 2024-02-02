@@ -18,3 +18,4 @@ export * from './product/quantity-selector/QuantitySelector'
 
 export * from './product/slideshow/ProductSlideShow'
 export * from './product/slideshow/ProductMobileSlides'
+export * from './stock-label/StockLabel'

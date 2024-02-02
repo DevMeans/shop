@@ -1,6 +1,6 @@
 'use server';
 
-import { Product, productfindmanyinterface } from '@/interfaces';
+import { productfindmanyinterface } from '@/interfaces';
 import prisma from '@/lib/prisma';
 
 interface PaginationOptions {

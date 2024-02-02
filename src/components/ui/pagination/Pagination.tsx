@@ -13,7 +13,6 @@ export const Pagination = ({ totalPages }: Props) => {
     const pathName = usePathname()
     const searchParams = useSearchParams()
     const pageString = searchParams.get('page') ?? 1
-
     let currentPage = isNaN(+pageString) ? 1 : +pageString
     if (currentPage < 1 || isNaN(+pageString)) {
         redirect(pathName)
@@ -35,7 +34,6 @@ export const Pagination = ({ totalPages }: Props) => {
         params.set('page', pageNumber.toString())
         return `${pathName}?${params.toString()}`
     }
-
     return (
         <div className="flex justify-center text-center mt-10 mb-32">
             <nav aria-label="Page navigation example">
@@ -49,8 +47,11 @@ export const Pagination = ({ totalPages }: Props) => {
 
                             <li key={page} className="page-item"><Link
                                 className={
-                                    clsx("page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
-                                        {'bg-blue-600 shadow-sm text-white hover:text-white hover:bg-blue-700': page === currentPage}
+                                    clsx(
+                                        "page-link relative block py-1.5 px-3 border-0 outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
+                                        {
+                                            'bg-blue-600 shadow-sm text-white hover:text-white hover:bg-blue-700': page === currentPage
+                                        }
                                     )
                                 }
                                 href={crearpageurl(page)}>{page}</Link></li>
