@@ -2,7 +2,7 @@
 import { getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProducGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
-
+export const revalidate = 60
 import {  redirect } from "next/navigation";
 
 interface Props {

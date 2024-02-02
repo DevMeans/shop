@@ -1,6 +1,6 @@
 
 import { Title } from '../../components/ui/titlle/Title';
-
+export const revalidate = 60
 import { ProducGrid } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
 import { redirect } from 'next/navigation';
