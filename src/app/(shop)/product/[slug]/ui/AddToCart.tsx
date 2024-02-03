@@ -14,6 +14,8 @@ export const AddToCart = ({ product }: Props) => {
     const addToCart = () => {
         setPosted(true)
         if (!size) return;
+        console.log(size,quantity,product)
+        //TODO: ADD TO CART
     }
 
     return (
