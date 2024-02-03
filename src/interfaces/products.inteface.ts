@@ -37,5 +37,5 @@ export interface CartProduct {
   price:number;
   quantity:number;
   size:Size;
-  imagen:string
+  image:string
 }
