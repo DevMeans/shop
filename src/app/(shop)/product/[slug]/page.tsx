@@ -4,12 +4,38 @@ import { SizeSelector } from '@/components/product/size-selector/SizeSelector';
 import { ProductMobileSlides, QuantitySelector, StockLabel } from "@/components";
 import { ProductSlideShow } from '../../../../components/product/slideshow/ProductSlideShow';
 import { getproductbyslug } from "@/actions";
+import type { Metadata, ResolvingMetadata } from 'next'
+
 export const revalidate = 10080
 
 
 interface Props {
   params: {
     slug: string
+  }
+}
+
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug
+
+  // fetch data
+  const product = await getproductbyslug(slug)
+
+  // optionally access and extend (rather than replace) parent metadata
+
+  return {
+    title: (product?.title ?? 'Producto no encontrado') ,
+    description: product?.description ?? '',
+    openGraph: {
+      title: product?.title ?? 'Producto no encontrado',
+      description: product?.description ?? '',
+      images: [`/product/${product?.images[2]}`],
+    },
   }
 }
 
