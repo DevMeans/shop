@@ -1,8 +1,7 @@
 import { Title } from '@/components';
 import Link from 'next/link';
 import { initialData } from '@/seed/seed';
-import Image from 'next/image';
-import { QuantitySelector } from '../../../components/product/quantity-selector/QuantitySelector';
+import { ProductsInCart } from './ui/ProductsInCart';
 
 
 const productsInCart = [
@@ -24,33 +23,7 @@ export default function CartPage() {
                         </Link>
 
                         {/* Items  */}
-                        {
-                            productsInCart.map(product => (
-                                <div key={product.slug} className='flex mb-5'>
-                                    <Image
-                                        src={`/products/${product.images[0]}`}
-                                        width={100}
-                                        height={100}
-                                        style={
-                                            {
-                                                width:'100px',
-                                                height:'100px'
-                                            }
-                                        }
-                                        alt={product.title}
-                                        className='mr-5 rounded'
-                                    />
-                                    <div>
-                                        <p>{product.title}</p>
-                                        <p>{product.price}</p>
-                                        <QuantitySelector quatity={3}></QuantitySelector>
-                                        <button className='underline mt-3'>
-                                            Remover
-                                        </button>
-                                    </div>
-                                </div>
-                            ))
-                        }
+                        <ProductsInCart />
                     </div>
                     {/* Checkout*/}
                     <div className='bg-white rounded-xl shadow-xl p-7 h-fit'>
@@ -72,7 +45,7 @@ export default function CartPage() {
                         </div>
                         <div className='mt-5 w-full'>
                             <Link className='flex btn-primary justify-center'
-                            href={`/checkout/address`}
+                                href={`/checkout/address`}
                             >
                                 Checkout
                             </Link>
