@@ -5,6 +5,7 @@ import { ProductMobileSlides, QuantitySelector, StockLabel } from "@/components"
 import { ProductSlideShow } from '../../../../components/product/slideshow/ProductSlideShow';
 import { getproductbyslug } from "@/actions";
 import type { Metadata, ResolvingMetadata } from 'next'
+import { AddToCart } from "./ui/AddToCart";
 
 export const revalidate = 10080
 
@@ -14,8 +15,6 @@ interface Props {
     slug: string
   }
 }
-
-
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
@@ -64,14 +63,7 @@ export default async function ProductoIdPage({ params }: Props) {
           ${product.price}
         </p>
         {/*Selector de tallas*/}
-        <SizeSelector
-          selectorSize={product.sizes[1]}
-          availableSizes={product.sizes} />
-        {/*Selector de cantidad*/}
-        <QuantitySelector quatity={2} />
-        <button className="btn-primary my-5">
-          Agregar al carrito
-        </button>
+        <AddToCart product = {product} />
         <h3 className=" font-bold text-sm ">
           Descripcion
         </h3>
