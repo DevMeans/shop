@@ -10,12 +10,23 @@ export const AddToCart = ({ product }: Props) => {
 
     const [size, setSize] = useState<Size | undefined>()
     const [quantity, setQuantity] = useState<number>(1)
-    const  addToCart =()=>{
-        console.log({size,quantity})
+    const [posted, setPosted] = useState(false)
+    const addToCart = () => {
+        setPosted(true)
+        if (!size) return;
     }
 
     return (
         <>
+
+            {
+                posted && !size && (
+                    <p className="mt-2 text-red-500 fade-in">
+                        debe seleccionar una talla *
+                    </p>
+                )
+            }
+
             <SizeSelector onsizeChanged={setSize}
                 selectorSize={size}
                 availableSizes={product.sizes} />
@@ -24,8 +35,8 @@ export const AddToCart = ({ product }: Props) => {
                 QuantityChanged={setQuantity}
             />
             <button
-            onClick={addToCart}
-            className="btn-primary my-5">
+                onClick={addToCart}
+                className="btn-primary my-5">
                 Agregar al carrito
             </button>
         </>
