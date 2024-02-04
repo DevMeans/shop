@@ -41,7 +41,9 @@ export const TopMenu = () => {
                 <Link href={`/search`}>
                     <IoSearchOutline className='w-5 h-5 mx-2' />
                 </Link>
-                <Link href={`/cart`} className='mx-2'>
+                <Link href={
+                    (getotalitemIncart === 0 && loaded) ? "/empty" : "/cart"
+                } className='mx-2'>
                     <div className='relative'>
 
                         {
