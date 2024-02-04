@@ -2,6 +2,7 @@ import { Title } from '@/components';
 import Link from 'next/link';
 import { initialData } from '@/seed/seed';
 import { ProductsInCart } from './ui/ProductsInCart';
+import { OrderSumary } from './ui/OrderSumary';
 
 
 const productsInCart = [
@@ -30,19 +31,7 @@ export default function CartPage() {
                         <h2 className='text-2xl'>
                             Resumen de orden
                         </h2>
-                        <div className='grid grid-cols-2'>
-                            <span>nr.Productos</span>
-                            <span className='text-right'>3 articulos</span>
-
-                            <span>Subtotal</span>
-                            <span className='text-right'>$ 100</span>
-
-                            <span>Impuestos</span>
-                            <span className='text-right'>$ 10</span>
-
-                            <span className='mt-5 text-2xl'>Impuestos</span>
-                            <span className='mt-5 text-2xl text-right'>$ 110</span>
-                        </div>
+                        <OrderSumary />
                         <div className='mt-5 w-full'>
                             <Link className='flex btn-primary justify-center'
                                 href={`/checkout/address`}
