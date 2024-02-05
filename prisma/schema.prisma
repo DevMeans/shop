@@ -74,5 +74,5 @@ model User {
   emailVerified DateTime?
   password      String
   role          Role      @default(user)
-  image         String
+  image         String?
 }
