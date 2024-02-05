@@ -10,7 +10,7 @@ import { IoInformationOutline } from "react-icons/io5";
 export const LoginForm = () => {
 
     const [state, dispatch] = useFormState(authenticate, undefined);
-    console.log(state)
+
     return (
         <form action={dispatch} className="flex flex-col">
 
@@ -31,14 +31,14 @@ export const LoginForm = () => {
                 aria-live="polite"
                 aria-atomic="true"
             >
-                {state ==="CredentialsSignin" && (
+                {state === "CredentialsSignin" && (
                     <>
                         <IoInformationOutline className="h-5 w-5 text-red-500" />
                         <p className="text-sm text-red-500">Las credenciales no son correctas</p>
                     </>
                 )}
             </div>
-       <LoginButton />
+            <LoginButton />
 
 
             {/* divisor l ine */}
@@ -60,17 +60,16 @@ export const LoginForm = () => {
 
 function LoginButton() {
     const { pending } = useFormStatus();
-   
+
     return (
         <button
-        type="submit"
-        className={
-            clsx( {"btn-primary":!pending ,"btn-disable":pending})
-        }
-        disabled={pending}
+            type="submit"
+            className={
+                clsx({ "btn-primary": !pending, "btn-disable": pending })
+            }
+            disabled={pending}
         >
-
-        Ingresar
-    </button>
+            Ingresar
+        </button>
     );
-  }
+}
