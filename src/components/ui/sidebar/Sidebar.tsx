@@ -10,7 +10,8 @@ export const Sidebar = () => {
 
     const isSideMenuOpen = UseUiStore(state => state.isSideMenuOpen);
     const closeMenu = UseUiStore(state => state.closeSideMenu)
-    const {data:session}= useSession()
+    const {data:session}= useSession();
+    const isAuthentication =!!session?.user;
     return (
         <div>
             {
@@ -57,17 +58,23 @@ export const Sidebar = () => {
                     <IoTicketOutline size={30} />
                     <span className="ml-3 text-xl">Ordenes</span>
                 </Link>
+            {
+                isAuthentication && (
+                        <button
+                            onClick={() => logout()}
+
+                            className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
+                            <IoLogOutOutline size={30} />
+                            <span className="ml-3 text-xl">Salir</span>
+                        </button>
+                )
+            }
+
                 <Link href={`/auth/login`} onClick={() => closeMenu()} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
                     <IoLogInOutline size={30} />
                     <span className="ml-3 text-xl">Ingresar</span>
                 </Link>
-                <button
-                    onClick={() => logout()}
-
-                    className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
-                    <IoLogOutOutline size={30} />
-                    <span className="ml-3 text-xl">Salir</span>
-                </button>
+          
                 <div className="w-full h-px bg-gray-200 my-10">
                 </div>
                 <Link href={`/`} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
