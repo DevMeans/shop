@@ -14,7 +14,7 @@ export const LoginForm = () => {
     const router = useRouter()
     const [state, dispatch] = useFormState(authenticate, undefined);
     useEffect(() => {
-        if (state === 'Success') {
+        if (state == 'Success') {
             router.replace('/')
         }
     }, )
