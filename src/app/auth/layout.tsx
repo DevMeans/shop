@@ -9,8 +9,8 @@ export default async function ShopLayout({
 
   const session = await auth()
 
-  console.log({session})
-  if(session?.user){
+  console.log({ session })
+  if (session?.user) {
     redirect('/')
   }
   return (
