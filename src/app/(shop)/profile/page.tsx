@@ -1,8 +1,22 @@
+import { auth } from '@/auth.config';
+import { Title } from '@/components';
+import { redirect } from 'next/navigation';
 
-export default function ProfilePage() {
-  return (
-    <div>
-      <h1>Hello Page</h1>
-    </div>
-  );
+export default async function ProfilePage() {
+
+    const session = await auth()
+    if (!session?.user) {
+        redirect('/')
+    }
+    return (
+        <div>
+            <pre>
+                <Title title='Pefil' />
+                {
+                    JSON.stringify(session.user, null, 2)
+                }
+            </pre>
+
+        </div>
+    );
 }

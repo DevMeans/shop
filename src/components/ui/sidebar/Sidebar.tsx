@@ -1,4 +1,5 @@
 'use client'
+import { logout } from '@/actions';
 import { UseUiStore } from "@/store"
 import clsx from "clsx"
 import Link from "next/link"
@@ -29,11 +30,11 @@ export const Sidebar = () => {
                 clsx(
                     "fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
                     {
-                        "translate-x-full":!isSideMenuOpen
+                        "translate-x-full": !isSideMenuOpen
                     }
                 )
             }>
-                <IoCloseOutline 
+                <IoCloseOutline
                     size={50}
                     className="absolute top-5 right-5 cursor-pointer"
                     onClick={() => closeMenu()}
@@ -46,7 +47,7 @@ export const Sidebar = () => {
                         className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
                     />
                 </div>
-                <Link href={`/`} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
+                <Link href={`/profile`} onClick={() => closeMenu()} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
                     <IoPersonAddOutline size={30} />
                     <span className="ml-3 text-xl">Perfil</span>
                 </Link>
@@ -58,10 +59,13 @@ export const Sidebar = () => {
                     <IoLogInOutline size={30} />
                     <span className="ml-3 text-xl">Ingresar</span>
                 </Link>
-                <Link href={`/`} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
+                <button
+                        onClick={()=>logout()}
+
+                    className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
                     <IoLogOutOutline size={30} />
                     <span className="ml-3 text-xl">Salir</span>
-                </Link>
+                </button>
                 <div className="w-full h-px bg-gray-200 my-10">
                 </div>
                 <Link href={`/`} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
