@@ -9,8 +9,6 @@ export default function ShopLayout({
 }) {
   return (
     <Provider>
-
-
       <main className="min-h-screen">
         <TopMenu></TopMenu>
         <Sidebar />
@@ -19,6 +17,6 @@ export default function ShopLayout({
         </div>
         <Footer />
       </main>
-    </Provider> //TODO :aca le puesto un provider no que tanto sera bueno añadirle pero esta bueno preguntar
+    </Provider>//TODO :aca le puesto un provider no que tanto sera bueno añadirle pero esta bueno preguntar
   );
 }

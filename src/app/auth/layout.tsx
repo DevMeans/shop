@@ -1,5 +1,6 @@
 import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
+import { Provider } from '../../components/provider/Provider';
 
 export default async function AuthLayout({
   children
@@ -15,7 +16,8 @@ export default async function AuthLayout({
 
     <main className="flex justify-center">
       <div className="w-full sm:w-[350px] px-10">
-        {children}
+        <Provider>{children}</Provider>
+
       </div>
     </main>
   );
