@@ -15,9 +15,9 @@ export const LoginForm = () => {
     const [state, dispatch] = useFormState(authenticate, undefined);
     useEffect(() => {
         if (state == 'Success') {
-            router.replace('/')
+            window.location.replace('/') //TODO : CON ESTA LINEAD E CODIGO EVITO QUE SE REFRESQUE EL "/" EN VES DE PONER PROVIDERS AL LAYOUT
         }
-    }, )
+    },)
 
     return (
         <form action={dispatch} className="flex flex-col">
