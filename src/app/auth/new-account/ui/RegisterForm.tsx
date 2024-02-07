@@ -7,6 +7,7 @@ type FormInputs = {
     password: string;
 }
 import Link from "next/link"
+import clsx from "clsx";
 
 
 export const RegisterForm = () => {
@@ -26,21 +27,33 @@ export const RegisterForm = () => {
             <label htmlFor="nombre">Nombre</label>
             <input
                 {...register('name', { required: true })}
-                className="px-5 py-2 border bg-gray-200 rounded mb-5"
+                className={
+                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
+                        'border-red-500': !!errors.name
+                    })
+                }
                 type="text" />
 
 
             <label htmlFor="email">Correo electrónico</label>
             <input
                 {...register('email', { required: true })}
-                className="px-5 py-2 border bg-gray-200 rounded mb-5"
+                className={
+                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5",{
+                        'border-red-500': !!errors.email
+                    })
+                }
                 type="email" />
 
 
             <label htmlFor="email">Contraseña</label>
             <input
-                {...register('password', { required: true })}
-                className="px-5 py-2 border bg-gray-200 rounded mb-5"
+                {...register('password', { required: true ,minLength:8 })}
+                className={
+                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5",{
+                        'border-red-500': !!errors.password
+                    })
+                }
                 type="password" />
 
             <button
