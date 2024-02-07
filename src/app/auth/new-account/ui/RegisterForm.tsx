@@ -8,13 +8,24 @@ type FormInputs = {
 }
 import Link from "next/link"
 import clsx from "clsx";
+import { login, registerForm } from "@/actions";
+import { useState } from "react";
 
 
 export const RegisterForm = () => {
+
+    const [errorMessage, setErrorMessage] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>()
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         const { name, email, password } = data
-        console.log({ name, email, password })
+       const resp= await  registerForm(name, email, password )
+       console.log(resp)
+       if(!resp.ok){
+        setErrorMessage(resp.message!)
+        return;
+       }
+       await login(email.toLowerCase(),password);
+       window.location.replace('/')
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
@@ -56,16 +67,25 @@ export const RegisterForm = () => {
                 )
 
             }
+            
+            {
+                errors.password?.type === 'minLength' && (
+                    <span className="text-red-600 font-bold">* Password minimo 8 caracteres</span>
+                )
+
+            }
             <label htmlFor="email">Contraseña</label>
             <input
-                {...register('password', { required: true, minLength: 8 })}
+                {...register('password', { required: true, minLength: 6 })}
                 className={
                     clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
                         'border-red-500': !!errors.password
                     })
                 }
                 type="password" />
-
+            {
+                <span className="text-red-600 font-bold">{errorMessage}</span>
+            }
             <button
 
                 className="btn-primary">
