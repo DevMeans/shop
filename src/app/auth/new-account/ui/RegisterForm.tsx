@@ -34,23 +34,33 @@ export const RegisterForm = () => {
                 }
                 type="text" />
 
+            {
+                errors.email?.type === 'required' && (
+                    <span className="text-red-600 font-bold">* El Email es obligatorio</span>
+                )
 
+            }
             <label htmlFor="email">Correo electrónico</label>
             <input
                 {...register('email', { required: true })}
                 className={
-                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5",{
+                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
                         'border-red-500': !!errors.email
                     })
                 }
                 type="email" />
 
+            {
+                errors.password?.type === 'required' && (
+                    <span className="text-red-600 font-bold">* El Password es obligatorio</span>
+                )
 
+            }
             <label htmlFor="email">Contraseña</label>
             <input
-                {...register('password', { required: true ,minLength:8 })}
+                {...register('password', { required: true, minLength: 8 })}
                 className={
-                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5",{
+                    clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
                         'border-red-500': !!errors.password
                     })
                 }
