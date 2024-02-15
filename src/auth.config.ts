@@ -12,9 +12,9 @@ export const authConfig: NextAuthConfig = {
     },
     callbacks: {
         jwt({ token, user }) {
-           console.log(user)
-            if(user){
-                token.data=user
+            console.log(user)
+            if (user) {
+                token.data = user
             }
             return token;
         },
@@ -23,10 +23,11 @@ export const authConfig: NextAuthConfig = {
             token?: JWT;
             user?: any;
         }) {
-            console.log({session,token,user})
-            session.user= token?.data  as any
+            console.log({ session, token, user })
+            session.user = token?.data as any
             return session
-        }
+        },
+        //TODO: para usar el middleware despues
     },
     providers: [
         credentials({
