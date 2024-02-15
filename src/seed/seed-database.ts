@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+// @ts-nocheck
 import { initialData } from './seed';
 import prisma from '../lib/prisma';
 

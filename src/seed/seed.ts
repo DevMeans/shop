@@ -1,3 +1,4 @@
+// @ts-nocheck
 import bcryptjs from 'bcryptjs'
 interface SeedProduct {
     description: string;
