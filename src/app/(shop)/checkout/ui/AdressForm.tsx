@@ -1,7 +1,9 @@
 'use client'
+import { useAddressStore } from '@/store';
 import clsx from 'clsx';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+
 
 type formInputs = {
     firtName: string;
@@ -16,19 +18,28 @@ type formInputs = {
 }
 interface Props {
     paises: [{
-        id:string
-        nombre:string
+        id: string
+        nombre: string
     }]
 }
-export const AdressForm = ({paises}:Props) => {
+export const AdressForm = ({ paises }: Props) => {
 
-    const { handleSubmit, register, formState: { isValid } } = useForm<formInputs>({
+    const { handleSubmit, register, formState: { isValid }, reset } = useForm<formInputs>({
         defaultValues: {
             //TODO:Leer de la base de datos
         }
     })
+    const setAddress = useAddressStore(state => state.setAddress)
+    const address = useAddressStore(state => state.address)
+    useEffect(() => {
+        if(address.firtName){
+            reset(address)
+        }
+    }, )
+    
     const onSubmit = (data: formInputs) => {
         console.log({ data })
+        setAddress(data);
     }
 
     return (
@@ -92,8 +103,8 @@ export const AdressForm = ({paises}:Props) => {
                     <option value="">[ Seleccione ]</option>
                     <option value="CRI">Costa Rica</option>
                     {
-                        paises.map((r,index)=>{
-                            return  <option key={`${r}-${index}`} value={r.id}>{r.nombre}</option>
+                        paises.map((r, index) => {
+                            return <option key={`${r}-${index}`} value={r.id}>{r.nombre}</option>
                         })
                     }
                 </select>

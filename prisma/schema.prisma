@@ -75,4 +75,21 @@ model User {
   password      String
   role          Role      @default(user)
   image         String?
+  address UserAddress?
+}
+
+model UserAddress {
+  id         String  @id @default(uuid())
+  firtName   String
+  lastName   String
+  address    String
+  address2   String?
+  postalCode String
+  city       String
+  country    String
+  countryId  String
+  phone      String
+
+  user User @relation(fields: [userId],references: [id])
+  userId String @unique
 }
