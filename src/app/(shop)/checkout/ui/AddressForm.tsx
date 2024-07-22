@@ -1,9 +1,13 @@
-'use client'
-import { useAddressStore } from '@/store';
-import clsx from 'clsx';
-import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+"use client";
+import { deleteUserAddress, setUserAdress } from "@/actions";
+import { Address } from "@/interfaces/address.interface";
+import { useRouter } from "next/navigation";
+import { useAddressStore } from "@/store";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
 
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 type formInputs = {
     firtName: string;
@@ -14,44 +18,66 @@ type formInputs = {
     city: string;
     country: string;
     phone: string;
-    rememberAddress: boolean
-}
+    rememberAddress: boolean;
+};
 interface Props {
-    paises: [{
-        id: string
-        nombre: string
-    }]
+    paises: [
+        {
+            id: string;
+            nombre: string;
+        }
+    ];
+    userStoreAddress?: Partial<Address> | null | undefined;
 }
-export const AdressForm = ({ paises }: Props) => {
-
-    const { handleSubmit, register, formState: { isValid }, reset } = useForm<formInputs>({
+export const AdressForm = ({ paises, userStoreAddress = {} }: Props) => {
+    const router = useRouter()
+    const {
+        handleSubmit,
+        register,
+        formState: { isValid },
+        reset,
+    } = useForm<formInputs>({
         defaultValues: {
+            ...(userStoreAddress as any),
+            rememberAddress: false
             //TODO:Leer de la base de datos
-        }
-    })
-    const setAddress = useAddressStore(state => state.setAddress)
-    const address = useAddressStore(state => state.address)
+        },
+    });
+    const { data: session } = useSession({
+        required: true,
+    });
+    const setAddress = useAddressStore((state) => state.setAddress);
+    const address = useAddressStore((state) => state.address);
+
     useEffect(() => {
-        if(address.firtName){
-            reset(address)
+        if (address.firtName) {
+            reset(address);
         }
-    }, )
-    
-    const onSubmit = (data: formInputs) => {
-        console.log({ data })
+    }, [address]);
+
+    const onSubmit = async (data: formInputs) => {
+
+        const { rememberAddress, ...restAddress } = data;
         setAddress(data);
-    }
+        if (data.rememberAddress) {
+            await setUserAdress(restAddress, session!.user.id);
+        } else {
+            await deleteUserAddress(session!.user.id)
+        }
+        router.push('/checkout')
+    };
 
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
+            className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2"
+        >
             <div className="flex flex-col mb-2">
                 <span>Nombres</span>
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('firtName', { required: true })}
+                    {...register("firtName", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2">
@@ -59,7 +85,7 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('lastName', { required: true })}
+                    {...register("lastName", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2">
@@ -67,7 +93,7 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('address', { required: true })}
+                    {...register("address", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2">
@@ -75,7 +101,7 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('address2')}
+                    {...register("address2")}
                 />
             </div>
             <div className="flex flex-col mb-2">
@@ -83,7 +109,7 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('postalCode', { required: true })}
+                    {...register("postalCode", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2">
@@ -91,22 +117,24 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('city', { required: true })}
+                    {...register("city", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2">
                 <span>País</span>
                 <select
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('country', { required: true })}
+                    {...register("country", { required: true })}
                 >
                     <option value="">[ Seleccione ]</option>
                     <option value="CRI">Costa Rica</option>
-                    {
-                        paises.map((r, index) => {
-                            return <option key={`${r}-${index}`} value={r.id}>{r.nombre}</option>
-                        })
-                    }
+                    {paises.map((r, index) => {
+                        return (
+                            <option key={`${r}-${index}`} value={r.nombre}>
+                                {r.nombre}
+                            </option>
+                        );
+                    })}
                 </select>
             </div>
             <div className="flex flex-col mb-2">
@@ -114,7 +142,7 @@ export const AdressForm = ({ paises }: Props) => {
                 <input
                     type="text"
                     className="p-2 border rounded-md bg-gray-200"
-                    {...register('phone', { required: true })}
+                    {...register("phone", { required: true })}
                 />
             </div>
             <div className="flex flex-col mb-2 sm:mt-1">
@@ -122,14 +150,13 @@ export const AdressForm = ({ paises }: Props) => {
                     <label
                         className="relative flex cursor-pointer items-center rounded-full p-3"
                         htmlFor="checkbox"
-
                     >
                         <input
-                            {...register('rememberAddress')}
+                            {...register("rememberAddress")}
                             type="checkbox"
                             className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-blue-500 hover:before:opacity-10"
                             id="checkbox"
-                            checked
+
                         />
                         <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                             <svg
@@ -152,18 +179,16 @@ export const AdressForm = ({ paises }: Props) => {
                 </div>
                 <button
                     disabled={!isValid}
-                    //btn-primary flex w-full sm:w-1/2 justify-center 
-                    type='submit'
+                    //btn-primary flex w-full sm:w-1/2 justify-center
+                    type="submit"
                     className={clsx({
-                        'btn-primary': isValid,
-                        'btm-disabled': !isValid
+                        "btn-primary": isValid,
+                        "btm-disabled": !isValid,
                     })}
-
                 >
                     Siguiente
                 </button>
-
             </div>
         </form>
-    )
-}
+    );
+};

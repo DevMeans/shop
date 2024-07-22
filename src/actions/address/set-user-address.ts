@@ -7,10 +7,10 @@ import type { Address } from "@/interfaces/address.interface";
 export const setUserAdress = async (address: Address, userId: string) => {
 
     try {
-        const newAddress=await createdOrReplaceAddress(address,userId)
+        const newAddress = await createdOrReplaceAddress(address, userId)
         return {
-            ok:true,
-            address:newAddress
+            ok: true,
+            address: newAddress
         }
     } catch (error) {
         console.log(error);
@@ -45,8 +45,8 @@ const createdOrReplaceAddress = async (address: Address, userId: string) => {
             return newAddress
         }
         const updateAddress = await prisma?.userAddress.update({
-            where:{userId},
-            data:addressToSave
+            where: { userId },
+            data: addressToSave
         })
         return updateAddress
 

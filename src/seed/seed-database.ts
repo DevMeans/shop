@@ -12,6 +12,7 @@ async function main() {
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.userAddress.deleteMany();
     // ]);
 
     const { categories, products, users } = initialData;

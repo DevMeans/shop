@@ -2,7 +2,7 @@ export interface Address {
     firtName: string
     lastName: string
     address: string
-    address2: string
+    address2?: string
     postalCode: string
     city: string
     country: string
