@@ -44,11 +44,42 @@ export const placeOrder = async (productsIds: producToOrder[], address: Address)
 
     //console.log({ subTotal, tax, total })
     const prismaTx = await prisma?.$transaction(async (tx) => {
-        throw new Error('No se pudo grabar algo')
+
+        const order = await tx.order.create({
+            data: {
+                userId: userId,
+                itemsInOrder: itemInOrder,
+                subTotal: subTotal,
+                tax: tax,
+                total: total,
+
+                OrderItem: {
+                    createMany: {
+                        data:
+                            productsIds.map(p => ({
+                                quantity: p.quantity,
+                                size: p.size,
+                                productId: p.productId,
+                                price: products?.find(product => product.id === p.productId)?.price ?? 0 //TODO: HACER UNA ECEPCION CUANDO UN PRODUCTO VIENE CON PRECIO 0 QUE NO DEBERIA VENIR
+                            }))
+
+                    }
+                }
+            }
+        })
+        const { firtName, ...restAddress } = address
+        const orderAddress = await tx.orderAddress.create({
+            data: {
+                ...restAddress,
+                firstName: firtName,
+                countryId: restAddress.country,
+                orderId: order.id
+            }
+        })
         return {
-            order:123,
-            updatedProducts:[],
-            orderAddress:{}
+            order: order,
+            updatedProducts: [],
+            orderAddress: orderAddress
         }
     })
 
