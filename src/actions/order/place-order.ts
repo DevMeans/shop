@@ -43,44 +43,88 @@ export const placeOrder = async (productsIds: producToOrder[], address: Address)
     }, { subTotal: 0, tax: 0, total: 0 })
 
     //console.log({ subTotal, tax, total })
-    const prismaTx = await prisma?.$transaction(async (tx) => {
 
-        const order = await tx.order.create({
-            data: {
-                userId: userId,
-                itemsInOrder: itemInOrder,
-                subTotal: subTotal,
-                tax: tax,
-                total: total,
+    try {
+        const prismaTx = await prisma?.$transaction(async (tx) => {
 
-                OrderItem: {
-                    createMany: {
-                        data:
-                            productsIds.map(p => ({
-                                quantity: p.quantity,
-                                size: p.size,
-                                productId: p.productId,
-                                price: products?.find(product => product.id === p.productId)?.price ?? 0 //TODO: HACER UNA ECEPCION CUANDO UN PRODUCTO VIENE CON PRECIO 0 QUE NO DEBERIA VENIR
-                            }))
+            if (!products) {
+                throw new Error("Products array is undefined");
+            }
 
+            const updateProductPromises = products.map((product) => {
+                const productQuantity = productsIds.filter(
+                    p => p.productId === product.id
+                ).reduce((acc, item) => item.quantity + acc, 0)
+                if (productQuantity === 0) {
+                    throw new Error(`${product.id} no tiene cantidad definida`)
+                }
+                return tx.product.update({
+                    where: { id: product.id },
+                    data: {
+                        //  inStock: product.inStock - productQuantity estarias tomando un valor viejo
+                        inStock: {
+                            decrement: productQuantity
+                        }
+                    }
+                })
+            })
+            const updateProducts = await Promise.all(updateProductPromises)
+            updateProducts.forEach(product => {
+                if (product.inStock < 0) {
+                    throw new Error(`${product.title} no tiene inventario suficiente`)
+                }
+            })
+            //crear order
+            const order = await tx.order.create({
+                data: {
+                    userId: userId,
+                    itemsInOrder: itemInOrder,
+                    subTotal: subTotal,
+                    tax: tax,
+                    total: total,
+
+                    OrderItem: {
+                        createMany: {
+                            data:
+                                productsIds.map(p => ({
+                                    quantity: p.quantity,
+                                    size: p.size,
+                                    productId: p.productId,
+                                    price: products?.find(product => product.id === p.productId)?.price ?? 0 //TODO: HACER UNA ECEPCION CUANDO UN PRODUCTO VIENE CON PRECIO 0 QUE NO DEBERIA VENIR
+                                }))
+
+                        }
                     }
                 }
-            }
-        })
-        const { firtName, ...restAddress } = address
-        const orderAddress = await tx.orderAddress.create({
-            data: {
-                ...restAddress,
-                firstName: firtName,
-                countryId: restAddress.country,
-                orderId: order.id
+            })
+            //crear ordenadress
+            const { firtName, ...restAddress } = address
+            const orderAddress = await tx.orderAddress.create({
+                data: {
+                    ...restAddress,
+                    firstName: firtName,
+                    countryId: restAddress.country,
+                    orderId: order.id
+                }
+            })
+            return {
+                order: order,
+                updatedProducts: updateProducts,
+                orderAddress: orderAddress
             }
         })
         return {
-            order: order,
-            updatedProducts: [],
-            orderAddress: orderAddress
+            ok:true,
+            order:prismaTx?.order,
+            prismaTx :prismaTx
         }
-    })
+    } catch (error: any) {
+        return {
+            ok: false,
+            message: error?.message
+        }
+    }
+
+
 
 }
