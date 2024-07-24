@@ -45,7 +45,7 @@ export const useCartStore = create<State>()(
                 set({ cart: updateCarProduct })
             },
             updateProductCart: (product: CartProduct, quantity: number) => {
-                console.log({ product, quantity })
+               // console.log({ product, quantity })
                 const { cart } = get()
                 const updateCartProducts = cart.map(item => {
                     if (item.id === product.id && item.size === product.size) {

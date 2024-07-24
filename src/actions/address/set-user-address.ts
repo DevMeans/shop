@@ -13,7 +13,7 @@ export const setUserAdress = async (address: Address, userId: string) => {
             address: newAddress
         }
     } catch (error) {
-        console.log(error);
+      //  console.log(error);
         return {
             ok: false,
             message: 'No se pudo grabar la direccion'

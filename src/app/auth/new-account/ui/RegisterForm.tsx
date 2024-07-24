@@ -19,7 +19,7 @@ export const RegisterForm = () => {
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         const { name, email, password } = data
        const resp= await  registerForm(name, email, password )
-       console.log(resp)
+      // console.log(resp)
        if(!resp.ok){
         setErrorMessage(resp.message!)
         return;

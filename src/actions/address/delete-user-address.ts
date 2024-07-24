@@ -9,7 +9,7 @@ export const deleteUserAddress = async (userId: string) => {
         })
         return { ok: true }
     } catch (error) {
-        console.log(error)
+       // console.log(error)
         return {
             ok: false,
             message: 'No ese pudo eliminar direccion'

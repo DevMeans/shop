@@ -12,7 +12,7 @@ export const authConfig: NextAuthConfig = {
     },
     callbacks: {
         jwt({ token, user }) {
-            console.log(user)
+           // console.log(user)
             if (user) {
                 token.data = user
             }
@@ -23,7 +23,7 @@ export const authConfig: NextAuthConfig = {
             token?: JWT;
             user?: any;
         }) {
-            console.log({ session, token, user })
+         //   console.log({ session, token, user })
             session.user = token?.data as any
             return session
         },

@@ -64,7 +64,7 @@ async function main() {
             data: imagesData
         });
     });
-    console.log('Seed ejecutado correctamente');
+   // console.log('Seed ejecutado correctamente');
 }
 (() => {
     if (process.env.NODE_ENV === 'production') return;

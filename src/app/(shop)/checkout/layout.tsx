@@ -12,7 +12,7 @@ export default async function CheckOutLayout({
         redirect('/auth/login?redirectTo=/checkout/address')
     }
 
-    console.log('Hola')
+   // console.log('Hola')
     return (
         <>
             {children}

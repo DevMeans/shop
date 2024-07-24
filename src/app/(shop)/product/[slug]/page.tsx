@@ -40,7 +40,7 @@ export async function generateMetadata(
 
 export default async function ProductoIdPage({ params }: Props) {
   const { slug } = params
-  console.log(slug)
+  // console.log(slug)
   const product = await getproductbyslug(slug)
   if (!product) {
     notFound()
