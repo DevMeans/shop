@@ -15,7 +15,7 @@ export const getPaginatedProductsWithImages = async ({ page = 1, take = 12, gend
     if (page < 1) page = 1
 
     try {
-        const products: productfindmanyinterface[] = await prisma.product.findMany({
+        const products = await prisma.product.findMany({
             where: { gender: gender },
             skip: (page - 1) * 12,
             take: take,

@@ -3,6 +3,7 @@
 import { auth } from "@/auth.config";
 import type { Size } from "@/interfaces";
 import type { Address } from "@/interfaces/address.interface";
+import { revalidatePath } from "next/cache";
 
 
 interface producToOrder {
@@ -107,6 +108,7 @@ export const placeOrder = async (productsIds: producToOrder[], address: Address)
                     orderId: order.id
                 }
             })
+            revalidatePath('/orders')
             return {
                 order: order,
                 updatedProducts: updateProducts,
@@ -114,9 +116,9 @@ export const placeOrder = async (productsIds: producToOrder[], address: Address)
             }
         })
         return {
-            ok:true,
-            order:prismaTx?.order,
-            prismaTx :prismaTx
+            ok: true,
+            order: prismaTx?.order,
+            prismaTx: prismaTx
         }
     } catch (error: any) {
         return {

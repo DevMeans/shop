@@ -3,18 +3,19 @@
 import { auth } from "@/auth.config";
 import prisma from '@/lib/prisma';
 
-export const getOrdersByUser = async () => {
+export const getOrders = async () => {
     const session = await auth()
-    if (!session?.user) { //TODO: PARA QUE SE NO SEA REPETITIVA ESTA RESPUESTA
+    if (session?.user.role !== 'admin') { //TODO: PARA QUE SE NO SEA REPETITIVA ESTA RESPUESTA
         return {
             ok: false,
             message: 'Debe estar autenticado'
         }
     }
     const orders = await prisma.order.findMany({
-        where: {
-            userId: session!.user.id
-        }, include: {
+        orderBy: {
+            createdAt: 'desc'
+        },
+        include: {
             OrderAddress: {
                 select: {
                     firstName: true,

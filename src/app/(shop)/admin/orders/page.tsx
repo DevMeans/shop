@@ -1,6 +1,6 @@
 // https://tailwindcomponents.com/component/hoverable-table
 export const revalidate = 0;
-import { getOrdersByUser } from '@/actions/order/get-order-by-user';
+import { getOrders } from '@/actions';
 import { Title } from '@/components';
 
 import Link from 'next/link';
@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 import { IoCardOutline } from 'react-icons/io5';
 
 export default async function orders() {
-  const { ok, orders = [] } = await getOrdersByUser();
+  const { ok, orders = [] } = await getOrders();
   //TODO : CUANDO VUELVES DEL PEDIDO NO SE VEN LOS PEDIDOS HECHOS A MENOS QUE REFRESQUES LA PAGINA
   if (!ok) {
     redirect('/auth/login')
@@ -46,7 +46,7 @@ export default async function orders() {
                     {order.id.split('-').at(-1)}
                   </td>
                   <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    {order.OrderAddress!.firstName}
+                    {order.OrderAddress?.firstName}
                   </td>
                   <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                     {
