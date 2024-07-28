@@ -1,10 +1,10 @@
-import { productfindmanyinterface } from "@/interfaces";
+
 import prisma from '@/lib/prisma';
 
 
 export const getproductbyslug = async (slug: string) => {
     try {
-        const product: productfindmanyinterface = await prisma.product.findFirst({
+        const product = await prisma.product.findFirst({
             include: {
                 ProductImage: {
                     select: {

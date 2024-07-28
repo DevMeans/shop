@@ -9,7 +9,7 @@ interface PaginationOptions {
     gender?: 'men' | 'women' | 'kid' | 'unisex'
 }
 
-export const getPaginatedProductsWithImages = async ({ page = 1, take = 12, gender = 'men' }: PaginationOptions) => {
+export const getPaginatedProductsWithImages = async ({ page = 1, take = 12, gender}: PaginationOptions) => {
 
     if (isNaN(Number(page))) page = 1
     if (page < 1) page = 1

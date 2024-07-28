@@ -107,7 +107,7 @@ export default async function OrderID({ params }: Props) {
             <h2 className="text-2xl mb-2">Dirección de entrega</h2>
             <div className="mb-10">
               <p className="text-xl">{
-                address?.firstName
+                address?.firstName ? address?.firstName :'No name'
               } {address?.lastName}</p>
               <p>{address?.address}</p>
               <p>{address?.address2}</p>

@@ -11,9 +11,10 @@ export const getOrdersByUser = async () => {
             message: 'Debe estar autenticado'
         }
     }
+    console.log(session.user) 
     const orders = await prisma.order.findMany({
         where: {
-            userId: session!.user.id
+            userId: session.user.id
         }, include: {
             OrderAddress: {
                 select: {

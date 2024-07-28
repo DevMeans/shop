@@ -1,18 +1,21 @@
 // https://tailwindcomponents.com/component/hoverable-table
 export const revalidate = 0;
-import { getOrdersByUser } from '@/actions/order/get-order-by-user';
+import { getPaginatedProductsWithImages } from '@/actions';
 import { Title } from '@/components';
-
+import { Pagination } from '../../../../components/ui/pagination/Pagination';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { IoCardOutline } from 'react-icons/io5';
-
-export default async function orders() {
-  const { ok, orders = [] } = await getOrdersByUser();
-  //TODO : CUANDO VUELVES DEL PEDIDO NO SE VEN LOS PEDIDOS HECHOS A MENOS QUE REFRESQUES LA PAGINA
-  if (!ok) {
-    redirect('/auth/login')
+import Image from 'next/image';
+interface Props {
+  searchParams: {
+    page?: string
   }
+}
+
+export default async function Products({ searchParams }: Props) {
+  const page = searchParams.page ? parseInt(searchParams.page) : 1
+  const { curretPage, totalPages, products = [] } = await getPaginatedProductsWithImages({ page });
+  //TODO : CUANDO VUELVES DEL PEDIDO NO SE VEN LOS PEDIDOS HECHOS A MENOS QUE REFRESQUES LA PAGINA
+
   return (
     <>
       <Title title="Orders" />
@@ -22,55 +25,60 @@ export default async function orders() {
           <thead className="bg-gray-200 border-b">
             <tr>
               <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                #ID
+                image
               </th>
               <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                Nombre completo
+                Nombre
               </th>
               <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                Estado
+                precio
               </th>
               <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                Opciones
+                genero
+              </th>
+              <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                inventario
+              </th>
+              <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                talla
               </th>
             </tr>
           </thead>
           <tbody>
             {
-              orders.map((order) => (
+              products.map((product) => (
                 <tr
-                  key={order.id}
+                  key={product.id}
                   className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {order.id.split('-').at(-1)}
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    {order.OrderAddress?.firstName ? order.OrderAddress!.firstName : 'No name'}
-                  </td>
-                  <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    {
-                      order.isPaid ? <div>
-                        <IoCardOutline className="text-green-800" />
-                        <span className='mx-2 text-green-800'>Pagada</span>
-                      </div> : <div>
-                        <IoCardOutline className="text-red-800" />
-                        <span className='mx-2 text-red-800'>No pagada</span>
-                      </div>
-                    }
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 ">
-                    <Link href={`/orders/${order.id}`} className="hover:underline">
-                      Ver orden
+                    <Link href={`/product/${product.slug}`}>
+                      <Image src={`/products/${product.ProductImage[0].url}`} width={80} height={80} alt={product.title} />
                     </Link>
                   </td>
-
+                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <Link href={`/product/${product.slug}`}>
+                      {product.title}</Link>
+                  </td>
+                  <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    {product.price}
+                  </td>
+                  <td className="text-sm text-gray-900 font-light px-6 ">
+                    {product.gender}
+                  </td>
+                  <td className="text-sm text-gray-900 font-light px-6 ">
+                    {product.inStock}
+                  </td>
+                  <td className="text-sm text-gray-900 font-light px-6 ">
+                    {product.sizes.join(',')}
+                  </td>
                 </tr>
               ))
             }
           </tbody>
         </table>
       </div>
+      <Pagination totalPages={totalPages}></Pagination>
     </>
   );
 }
