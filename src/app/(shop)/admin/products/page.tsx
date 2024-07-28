@@ -57,7 +57,7 @@ export default async function Products({ searchParams }: Props) {
                     </Link>
                   </td>
                   <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    <Link href={`/product/${product.slug}`}>
+                    <Link href={`/admin/products/${product.slug}`}>
                       {product.title}</Link>
                   </td>
                   <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
