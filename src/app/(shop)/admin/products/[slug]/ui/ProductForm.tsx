@@ -1,50 +1,82 @@
 "use client";
 
-import { Category, Product } from "@/interfaces";
+import { Category, Product, ProductImage } from "@/interfaces";
+
+import { useForm } from "react-hook-form";
+import Image from 'next/image';
 
 interface Props {
-    product: Product;
-    categories:Category[];
+    product: Product & { ProductImage?: ProductImage[] };
+    categories: Category[];
 }
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ product ,categories}: Props) => {
+interface FormInputs {
+    title: string;
+    slug: string;
+    description: string;
+    price: number;
+    inStock: number
+    sizes: string[];
+    tags: string;
+    gender: 'men' | 'women' | 'kid' | 'unisex'
+    categoryId: string
+}
+
+export const ProductForm = ({ product, categories }: Props) => {
+    console.log(product)
+    const {
+        handleSubmit,
+        register,
+        formState: { isValid }
+    } = useForm<FormInputs>({
+        defaultValues: {
+            ...product,
+            tags: product.tags.join(', '),//TODO : ENTENDER ESTO Y POR QUE MEJOR NO PONER UN ARREGLO EN EL INTERFACE
+            sizes: product.sizes ?? []
+        }
+    });
+    const onSubmit = async (data: FormInputs) => {
+        console.log({ data })
+    }
     return (
-        <form className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
             {/* Textos */}
             <div className="w-full">
                 <div className="flex flex-col mb-2">
                     <span>Título</span>
-                    <input type="text" className="p-2 border rounded-md bg-gray-200" />
+                    <input type="text" className="p-2 border rounded-md bg-gray-200" {...register('title', { required: true })} />
                 </div>
 
                 <div className="flex flex-col mb-2">
                     <span>Slug</span>
-                    <input type="text" className="p-2 border rounded-md bg-gray-200" />
+                    <input type="text" className="p-2 border rounded-md bg-gray-200" {...register('slug', { required: true })} />
                 </div>
 
                 <div className="flex flex-col mb-2">
                     <span>Descripción</span>
                     <textarea
                         rows={5}
-                        className="p-2 border rounded-md bg-gray-200"
+                        className="p-2 border rounded-md bg-gray-200" {...register('description', { required: true })}
                     ></textarea>
                 </div>
 
                 <div className="flex flex-col mb-2">
                     <span>Price</span>
-                    <input type="number" className="p-2 border rounded-md bg-gray-200" />
+                    <input {...register('price', { minLength: 0 })} type="number" className="p-2 border rounded-md bg-gray-200" />
                 </div>
 
                 <div className="flex flex-col mb-2">
                     <span>Tags</span>
-                    <input type="text" className="p-2 border rounded-md bg-gray-200" />
+                    <input {...register('title', { required: true })} type="text" className="p-2 border rounded-md bg-gray-200" />
                 </div>
 
                 <div className="flex flex-col mb-2">
                     <span>Gender</span>
-                    <select className="p-2 border rounded-md bg-gray-200">
+                    <select className="p-2 border rounded-md bg-gray-200"
+                        {...register('gender', { required: true })}
+                    >
                         <option value="">[Seleccione]</option>
                         <option value="men">Men</option>
                         <option value="women">Women</option>
@@ -55,10 +87,12 @@ export const ProductForm = ({ product ,categories}: Props) => {
 
                 <div className="flex flex-col mb-2">
                     <span>Categoria</span>
-                    <select className="p-2 border rounded-md bg-gray-200">
+                    <select className="p-2 border rounded-md bg-gray-200"
+                        {...register('categoryId', { required: true })}
+                    >
                         <option value="">[Seleccione]</option>
                         {
-                            categories.map((category)=>(
+                            categories.map((category) => (
                                 <option key={category.id} value={category.id}>{category.name}</option>
                             ))
                         }
@@ -100,6 +134,27 @@ export const ProductForm = ({ product ,categories}: Props) => {
                             accept="image/png, image/jpeg"
                         />
 
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1">
+                        {
+                            product.ProductImage?.map(image => (
+                                <div key={image.id} className="">
+                                    <Image
+                                        alt={product.title ?? ''}
+                                        src={`/products/${image.url}`}
+                                        width={300}
+                                        height={300}
+                                        className="rounded-t shadow-md"
+                                    />
+                                    <button 
+                                    onClick={()=>console.log(image.url)}
+
+                                        type="button" className="btn-danger rounded-b-xl w-full">
+                                        eliminar
+                                    </button>
+                                </div>
+                            ))
+                        }
                     </div>
 
                 </div>

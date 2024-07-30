@@ -8,7 +8,8 @@ export const getproductbyslug = async (slug: string) => {
             include: {
                 ProductImage: {
                     select: {
-                        url: true
+                        url: true,
+                        id:true
                     }
                 }
             }, where: {
