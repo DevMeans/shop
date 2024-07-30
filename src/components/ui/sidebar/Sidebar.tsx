@@ -92,7 +92,7 @@ export const Sidebar = () => {
                     session?.user.role === 'admin' && (
 
                         <>
-                            <Link href={`/admin/products`} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
+                            <Link href={`/admin/products`} onClick={() => closeMenu()} className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition">
                                 <IoShirtOutline size={30} />
                                 <span className="ml-3 text-xl">Productos</span>
                             </Link>

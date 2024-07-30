@@ -15,14 +15,14 @@ export default async function ProductPage({ params }: Props) {
         getCategories()
     ])
 
-    if (!product) {
+    if (!product && slug!=='new') {
         redirect('/admin/products')
     }
     const title = (slug === 'new') ? 'Nuevo Producto' : 'Editar producto'
     return (
         <>
             <Title title={title}></Title>
-            <ProductForm product={product} categories ={categories}></ProductForm>
+            <ProductForm product={product || {}} categories ={categories}></ProductForm>
         </>
     );
 }
