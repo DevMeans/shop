@@ -16,8 +16,8 @@ interface Props {
 export default async function Home({ searchParams }: Props) {
 
   const page = searchParams.page ? parseInt(searchParams.page) : 1
-  const { products,curretPage,totalPages } = await getPaginatedProductsWithImages({page});
-  if(products.length===0){
+  const { products, curretPage, totalPages } = await getPaginatedProductsWithImages({ page });
+  if (products.length === 0) {
     redirect('/')
   }
   return (
@@ -30,7 +30,11 @@ export default async function Home({ searchParams }: Props) {
         products={products}
       >
       </ProducGrid>
-      <Pagination totalPages={totalPages} />
+
+      {
+        totalPages ? <Pagination totalPages={totalPages} /> : <div></div>
+      }
+
     </>
   );
 }
