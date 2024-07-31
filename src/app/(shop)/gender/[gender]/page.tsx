@@ -7,7 +7,7 @@ import {  redirect } from "next/navigation";
 
 interface Props {
   params: {
-    gender: Category,
+    gender: 'men' | 'women' | 'kid' | 'unisex',
 
   },
   searchParams: {
@@ -24,7 +24,7 @@ export default async function CategoryIdPage({ params, searchParams }: Props) {
   if (products.length === 0) {
     redirect('/')
   }
-  const labels: Record<Category, string> = {
+  const labels: Record<'men' | 'women' | 'kid' | 'unisex', string> = {
     "men": "Hombres",
     "women": "Mujeres",
     "kid": "niños",
