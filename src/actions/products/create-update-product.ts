@@ -1,8 +1,10 @@
 "use server";
 import { Gender, Product, Size } from "@prisma/client";
+import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 const productSchema = z.object({
   id: z.string().uuid().optional().nullable(),
   title: z.string().min(3).max(255),
@@ -34,45 +36,84 @@ export const createUpdateProduct = async (formData: FormData) => {
   const product = productParsed.data;
   product.slug = product.slug.toLowerCase().replace(/ /g, "-").trim();
   const { id, ...rest } = product;
-  const prismaTx = await prisma?.$transaction(async (tx) => {
-    let product: Product;
-    const tagsArray = rest.tags
-      .split(",")
-      .map((tag) => tag.trim().toLowerCase());
-    if (id) {
-      product = await prisma.product.update({
-        where: { id },
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
+  try {
+    const prismaTx = await prisma?.$transaction(async (tx) => {
+      let product: Product;
+      const tagsArray = rest.tags
+        .split(",")
+        .map((tag) => tag.trim().toLowerCase());
+      if (id) {
+        product = await prisma.product.update({
+          where: { id },
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: {
+              set: tagsArray,
+            },
           },
-          tags: {
-            set: tagsArray,
+        });
+
+        console.log("Update product");
+      } else {
+        product = await prisma.product.create({
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: {
+              set: tagsArray,
+            },
           },
-        },
-      });
-      revalidatePath(`/product/gender/${product.gender}`);
-      revalidatePath(`/product/${id}`);
-      console.log("Update product");
-    } else {
-      product = await prisma.product.create({
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
-          },
-          tags: {
-            set: tagsArray,
-          },
-        },
-      });
-    }
+        });
+      }
+      //!!Recorrer las imagenes
+      if (formData.getAll("images")) {
+        const images = await uploadImagenes(formData.getAll("images") as File[]);
+        console.log(images)
+      }
+      return {
+        product,
+      };
+    });
+    revalidatePath(`/admin/products`);
+    revalidatePath(`/admin/products/${product.slug}`);
+    revalidatePath(`/products/${product.slug}`); //TODO: NO SE SI SERA NECESARIO
+    revalidatePath(`/product/gender/${product.gender}`);
+    revalidatePath(`/product/${id}`);
+    //TODO: REVALIDACIONES DEL PATH
     return {
-      product,
+      ok: true,
+      product: prismaTx.product,
     };
-  });
-  return {
-    ok: true,
-  };
+  } catch (error) {
+    return {
+      ok: false,
+      message: `Revisar los logs, no se puedo actualizar/crear`,
+    };
+  }
+};
+const uploadImagenes = async (images: File[]) => {
+  try {
+    const uploadPromises = images.map(async (image) => {
+      try {
+        const buffer = await image.arrayBuffer();
+        const base64Image = Buffer.from(buffer).toString("base64");
+        return cloudinary.uploader
+          .upload(`data:image/png;base64,${base64Image}`)
+          .then((r) => r.secure_url);
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    });
+    const uploadImages = await Promise.all(uploadPromises);
+    return uploadImages;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import Image from 'next/image';
 import clsx from "clsx";
 import { createUpdateProduct } from '../../../../../../actions/products/create-update-product';
+import { useRouter } from "next/navigation";
 
 interface Props {
     product: Partial<Product> & { ProductImage?: ProductImage[] };
@@ -24,9 +25,11 @@ interface FormInputs {
     tags: string;
     gender: 'men' | 'women' | 'kid' | 'unisex'
     categoryId: string
+    images?: FileList
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+    const router = useRouter()
     console.log(product)
     const {
         handleSubmit,
@@ -39,7 +42,8 @@ export const ProductForm = ({ product, categories }: Props) => {
         defaultValues: {
             ...product,
             tags: product.tags?.join(', '),//TODO : ENTENDER ESTO Y POR QUE MEJOR NO PONER UN ARREGLO EN EL INTERFACE
-            sizes: product.sizes ?? []
+            sizes: product.sizes ?? [],
+            images: undefined
         }
     });
     watch('sizes')
@@ -50,7 +54,7 @@ export const ProductForm = ({ product, categories }: Props) => {
     }
     const onSubmit = async (data: FormInputs) => {
         const formData = new FormData();
-        const { ...productToSave } = data
+        const { images, ...productToSave } = data
         if (product.id) {
             formData.append('id', product.id ?? "")
         }
@@ -64,8 +68,17 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append('tags', productToSave.tags)
         formData.append('categoryId', productToSave.categoryId)
         formData.append('gender', productToSave.gender)
-        const { ok } = await createUpdateProduct(formData)
-        console.log(ok)
+        if (images) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i])
+            }
+        }
+        const { ok, product: updatedProduct } = await createUpdateProduct(formData)
+        if (!ok) {
+            alert('El producto no se pudo actualizar')
+            return;
+        }
+        router.replace(`/admin/products/${updatedProduct?.slug}`)
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
@@ -165,10 +178,11 @@ export const ProductForm = ({ product, categories }: Props) => {
 
                         <span>Fotos</span>
                         <input
+                            {...register('images')}
                             type="file"
                             multiple
                             className="p-2 border rounded-md bg-gray-200"
-                            accept="image/png, image/jpeg"
+                            accept="image/png, image/jpeg, image/avif"
                         />
 
                     </div>
