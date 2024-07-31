@@ -4,6 +4,7 @@ import { auth } from "@/auth.config";
 import type { Size } from "@/interfaces";
 import type { Address } from "@/interfaces/address.interface";
 import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
 
 interface producToOrder {
   productId: string;
@@ -23,7 +24,7 @@ export const placeOrder = async (
     };
   }
   //console.log({ productsIds, address, userId })
-  const products = await prisma?.product.findMany({
+  const products = await prisma.product.findMany({
     where: {
       id: {
         in: productsIds.map((p) => p.productId),
@@ -51,7 +52,7 @@ export const placeOrder = async (
   //console.log({ subTotal, tax, total })
 
   try {
-    const prismaTx = await prisma?.$transaction(async (tx) => {
+    const prismaTx = await prisma.$transaction(async (tx) => {
       if (!products) {
         throw new Error("Products array is undefined");
       }
