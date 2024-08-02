@@ -28,7 +28,7 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
 
   return {
-    title: (product?.title ?? 'Producto no encontrado') ,
+    title: (product?.title ?? 'Producto no encontrado'),
     description: product?.description ?? '',
     openGraph: {
       title: product?.title ?? 'Producto no encontrado',
@@ -63,7 +63,7 @@ export default async function ProductoIdPage({ params }: Props) {
           ${product.price}
         </p>
         {/*Selector de tallas*/}
-        <AddToCart product = {product} />
+        <AddToCart product={product} />
         <h3 className=" font-bold text-sm ">
           Descripcion
         </h3>
