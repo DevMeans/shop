@@ -60,7 +60,6 @@ export const ProductForm = ({ product, categories }: Props) => {
         if (product.id) {
             formData.append('id', product.id ?? "")
         }
-
         formData.append('title', productToSave.title)
         formData.append('slug', productToSave.slug)
         formData.append('description', productToSave.description)
@@ -200,7 +199,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         className="rounded-t shadow-md"
                                     />
                                     <button
-                                        onClick={() => deleteProductImage(image.id,image.url)}
+                                        onClick={() => deleteProductImage(image.id, image.url)}
 
                                         type="button" className="btn-danger rounded-b-xl w-full">
                                         eliminar

@@ -1,11 +1,18 @@
-'use client'
-import { Title } from '../../../../components/ui/titlle/Title';
 
-export default function NamePage() {
+import Link from 'next/link';
+import { Title } from '../../../../components/ui/titlle/Title';
+import { getColors } from '@/actions/colors/get-colors';
+
+export default async function NamePage() {
+  const getcolors = await getColors()
+  console.log(getcolors)
   return (
     <>
       <Title title='Colores'></Title>
       <div className="h-10">
+      </div>
+      <div className='flex justify-end'>
+        <Link className='btn' href={`/admin/colors/new`}>nuevo</Link>
       </div>
       <div className="overflow-x-auto max-w-[1200px] m-auto">
         <table className="table">
@@ -14,30 +21,27 @@ export default function NamePage() {
               <th>Id</th>
               <th>Name</th>
               <th>Color</th>
+              <th>estado</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>1</th>
-              <td>Rojo</td>
-              <td><div className="size-5 bg-red-500">
-              </div></td>
-              <td><button className="btn btn-sm "> Editar</button></td>
-            </tr>
-            <tr>
-              <th>1</th>
-              <td>Rojo</td>
-              <td><div className="size-5 bg-red-500">
-              </div></td>
-              <td><button className="btn btn-sm "> Editar</button></td>
-            </tr>          <tr>
-              <th>1</th>
-              <td>Rojo</td>
-              <td><div className="size-5 bg-red-500">
-              </div></td>
-              <td><button className="btn btn-sm "> Editar</button></td>
-            </tr>
+            {
+              getcolors?.map((color,i) => (
+                <tr>
+                  <th>{i+1}</th>
+                  <td>{color.name}</td>
+                  <td><div className='size-5' style={{backgroundColor:`${color.hexa}`}}>
+                  </div></td>
+                  <td>
+                    {color.estado}
+                  </td>
+                  <td><Link className="btn btn-sm" href={`/admin/colors/${color.id}`}> Editar</Link></td>
+                </tr>
+              ))
+            }
+
+
           </tbody>
         </table>
       </div>
