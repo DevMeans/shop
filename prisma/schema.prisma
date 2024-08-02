@@ -144,8 +144,8 @@ model OrderAddress {
 }
 
 model ColorProduct {
-  id   String   @id @default(uuid())
-  name String
-  hexa String?
-  rgb  String[] @default([])
+  id     String  @id @default(uuid())
+  name   String
+  hexa   String?
+  estado Boolean @default(true)
 }
