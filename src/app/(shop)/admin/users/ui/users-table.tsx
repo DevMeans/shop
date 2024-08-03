@@ -44,7 +44,6 @@ export default function UsersTable({ users }: Props) {
                                         <option value="admin">Admin</option>
                                         <option value="user">User</option>
                                     </select>
-
                                 </td>
                             </tr>
                         ))
