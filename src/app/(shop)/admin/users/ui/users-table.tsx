@@ -27,7 +27,7 @@ export default function UsersTable({ users }: Props) {
                     {
                         users.map((user) => (
                             <tr
-                                key={user.id}
+                                key={user.id + 1}
                                 className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -40,14 +40,12 @@ export default function UsersTable({ users }: Props) {
                                     <select
                                         value={user.role}
                                         onChange={e => changeUserRole(user.id, e.target.value)}
-                                        name="" id="">
+                                        name="" id="" className="bg-cyan-50">
                                         <option value="admin">Admin</option>
                                         <option value="user">User</option>
                                     </select>
 
                                 </td>
-
-
                             </tr>
                         ))
                     }

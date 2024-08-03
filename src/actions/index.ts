@@ -13,3 +13,4 @@ export * from "./category/get-categoroies";
 export * from "./products/create-update-product";
 export * from "./products/delete-product-image";
 export * from "./colors/create-update-colors";
+export * from './colors/delete-color-by-id'
