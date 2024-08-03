@@ -7,6 +7,6 @@ interface Props {
 export const BtnEliminar = ({ id }: Props) => {
     console.log('btn=', id)
     return (
-        <button className="btn btn-sm" key={id+3} onClick={() => deleteById(id)}>eliminar</button>
+        <button className="btn btn-sm" onClick={() => deleteById(id)}>eliminar</button>
     )
 }

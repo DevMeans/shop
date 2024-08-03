@@ -31,7 +31,7 @@ export default async function NamePage() {
           <tbody>
             {
               getcolors?.map((color, i) => (
-                <tr>
+                <tr key={color.id}>
                   <th>{i + 1}</th>
                   <td>{color.name}</td>
                   <td><div className='size-5' style={{ backgroundColor: `${color.hexa}` }}>
