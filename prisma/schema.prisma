@@ -54,8 +54,9 @@ model Product {
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
 
-  ProductImage ProductImage[]
-  OrderItem    OrderItem[]
+  ProductImage    ProductImage[]
+  OrderItem       OrderItem[]
+  ColorForProduct ColorForProduct[]
 
   @@index([gender])
 }
@@ -144,8 +145,17 @@ model OrderAddress {
 }
 
 model ColorProduct {
-  id     String  @id @default(uuid())
-  name   String  @unique
-  hexa   String?
-  estado Int
+  id              String            @id @default(uuid())
+  name            String            @unique
+  hexa            String?
+  estado          Int
+  ColorForProduct ColorForProduct[]
+}
+
+model ColorForProduct {
+  id String @id @default(uuid())
+  product   Product      @relation(fields: [productId], references: [id])
+  productId String       @unique
+  Color     ColorProduct @relation(fields: [colorId], references: [id])
+  colorId   String
 }
