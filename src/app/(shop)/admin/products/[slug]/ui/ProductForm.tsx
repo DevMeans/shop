@@ -9,10 +9,13 @@ import { createUpdateProduct } from '../../../../../../actions/products/create-u
 import { useRouter } from "next/navigation";
 import { ProductImage } from "@/components";
 import { deleteProductImage } from "@/actions";
-
+import { ColorSelector } from "@/components/product/color-selector/ColorSelector";
 interface Props {
     product: Partial<Product> & { ProductImage?: ProductWidImage[] };
     categories: Category[];
+    colors: any[],
+    colorForProduct: any[]
+
 }
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
@@ -30,9 +33,13 @@ interface FormInputs {
     images?: FileList
 }
 
-export const ProductForm = ({ product, categories }: Props) => {
+export const ProductForm = ({ product, categories, colors, colorForProduct }: Props) => {
+
+    let arreglo:any[]= []
+    console.log(colorForProduct)
+    colorForProduct.map((r: any) => arreglo.push(r.colorId))
     const router = useRouter()
-    console.log(product)
+
     const {
         handleSubmit,
         register,
@@ -151,6 +158,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     <span>Inventario</span>
                     <input {...register('inStock', { minLength: 0 })} type="number" className="p-2 border rounded-md bg-gray-200" />
                 </div>
+                <ColorSelector colors={colors} productId={product.id!} colorsSelected={arreglo}></ColorSelector>
                 {/* As checkboxes */}
                 <div className="flex flex-col">
 

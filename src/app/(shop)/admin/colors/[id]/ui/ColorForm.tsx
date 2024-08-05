@@ -45,7 +45,7 @@ export default function ColorForm({ id, colors }: Props) {
         console.log(data)
         const formData = new FormData();
         formData.append('name', data.name ?? "")
-        formData.append('hexa', data.hexa.trim() ?? "")
+        formData.append('hexa', data.hexa.trim().toLowerCase() ?? "")
         formData.append('estado', data.estado.toString() ?? "")
         console.log(formData)
         const color = await createUpdateColors(formData, id)

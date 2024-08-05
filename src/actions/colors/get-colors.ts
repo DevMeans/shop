@@ -14,6 +14,7 @@ export const getColors = async () => {
     console.log(colordb);
     return colordb;
   } catch (error) {
-    console.log(error);
+    console.log(error); //TODO : REVISAR ESTO PORFAVOR
+    return [];
   }
 };
