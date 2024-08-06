@@ -3,13 +3,14 @@ import { QuantitySelector, SizeSelector } from "@/components"
 import { CartProduct, Product, Size } from "@/interfaces"
 import { useCartStore } from "@/store"
 import { useState } from "react"
+import { ColorSelectorProducts } from '../../../../../components/product/color-selector/ColorSelectorProduct';
 
 interface Props {
     product: Product
 }
 
 export const AddToCart = ({ product }: Props) => {
-
+    console.log(product.ColorForProduct)
     const addProductToCart =useCartStore(state =>state.addProductCart)
     const [size, setSize] = useState<Size | undefined>()
     const [quantity, setQuantity] = useState<number>(1)
@@ -29,8 +30,6 @@ export const AddToCart = ({ product }: Props) => {
             image:product.images[0] 
         }
         addProductToCart(cartProduct)
-
-        
         setPosted(false)
         setQuantity(1)
         setSize(undefined)
@@ -51,6 +50,7 @@ export const AddToCart = ({ product }: Props) => {
                 selectorSize={size}
                 availableSizes={product.sizes} />
             {/*Selector de cantidad*/}
+            <ColorSelectorProducts colors={product.ColorForProduct} productId=""></ColorSelectorProducts>
             <QuantitySelector quatity={quantity}
                 QuantityChanged={setQuantity}
             />

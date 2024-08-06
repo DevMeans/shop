@@ -1,4 +1,3 @@
-
 import { number } from "zod";
 
 export interface Product {
@@ -13,6 +12,7 @@ export interface Product {
   title: string;
   //TODO:  type: ValidType;
   gender: "men" | "women" | "kid" | "unisex";
+  ColorForProduct: ColorForProduct[];
 }
 export interface ProductImage {
   id: number;
@@ -44,4 +44,9 @@ export interface CartProduct {
   quantity: number;
   size: Size;
   image: string;
+}
+export interface ColorForProduct {
+  id: string;
+  productId: string;
+  colorId: string;
 }

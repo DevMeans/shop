@@ -153,9 +153,9 @@ model ColorProduct {
 }
 
 model ColorForProduct {
-  id String @id @default(uuid())
+  id        String       @id @default(uuid())
   product   Product      @relation(fields: [productId], references: [id])
-  productId String       
+  productId String
   Color     ColorProduct @relation(fields: [colorId], references: [id])
   colorId   String
 }
