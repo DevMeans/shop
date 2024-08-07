@@ -25,7 +25,8 @@ export const getPaginatedProductsWithImages = async ({ page = 1, take = 12, gend
                     select: {
                         url: true
                     }
-                }
+                },
+                ColorForProduct:true
             }
         });
 

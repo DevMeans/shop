@@ -9,6 +9,7 @@ export const ProductsInCart = () => {
     const [loaded, setLoaded] = useState(false)
 
     const productsInCart = useCartStore(state => state.cart)
+    console.log(productsInCart)
     const updateProduct = useCartStore(state => state.updateProductCart)
     const removeProduct = useCartStore(state => state.removeProduct)
     useEffect(() => {

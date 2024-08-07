@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const SizeSelector = ({ selectorSize, availableSizes, onsizeChanged }: Props) => {
+
     return (
         <div className="my-5">
             <h3 className="font-bold m-4">

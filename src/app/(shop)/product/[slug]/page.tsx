@@ -46,14 +46,14 @@ export default async function ProductoIdPage({ params }: Props) {
     notFound()
   }
   return (
-    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 mx-auto">
+    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-1 xl:grid-cols-5 gap-3 mx-auto">
       {/*SlideShow*/}
-      <div className="col-span-1 md:col-span-1 xl:col-start-2 xl:col-span-2">
+      <div className="col-span-1 md:col-span-1 xl:col-start-1 xl:col-span-2">
         <ProductMobileSlides title={product.title} images={product.images} className="block md:hidden" />
         <ProductSlideShow title={product.title} images={product.images} className="hidden md:block" />
       </div>
       {/*Detalles*/}
-      <div className="col-span-1 px-5">
+      <div className="col-span-3 px-5">
         <StockLabel slug={slug} />
 
         <h1 className={` ${titlefont.className} antialiased font-bold text-xl`}>

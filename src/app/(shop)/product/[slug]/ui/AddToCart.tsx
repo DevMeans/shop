@@ -10,29 +10,37 @@ interface Props {
 }
 
 export const AddToCart = ({ product }: Props) => {
-    console.log(product.ColorForProduct)
-    const addProductToCart =useCartStore(state =>state.addProductCart)
+    console.log(product)
+    const addProductToCart = useCartStore(state => state.addProductCart)
     const [size, setSize] = useState<Size | undefined>()
+    const [color, setcolor] = useState()
     const [quantity, setQuantity] = useState<number>(1)
     const [posted, setPosted] = useState(false)
     const addToCart = () => {
         setPosted(true)
         if (!size) return;
-       // console.log(size,quantity,product)
+        // console.log(size,quantity,product)
         //TODO: ADD TO CART
-        const cartProduct:CartProduct={
-            id:product.id,
-            slug:product.slug,
-            title:product.title,
-            price:product.price,
-            quantity:quantity,
-            size:size,
-            image:product.images[0] 
+        const cartProduct: CartProduct = {
+            id: product.id,
+            slug: product.slug,
+            title: product.title,
+            price: product.price,
+            quantity: quantity,
+            size: size,
+            image: product.images[0],
+            color: {
+                cantidad: quantity,
+                color: color
+            }
+
         }
+        console.info('CartProduct',cartProduct)
         addProductToCart(cartProduct)
         setPosted(false)
         setQuantity(1)
         setSize(undefined)
+        setcolor(undefined)
     }
 
     return (
@@ -50,7 +58,14 @@ export const AddToCart = ({ product }: Props) => {
                 selectorSize={size}
                 availableSizes={product.sizes} />
             {/*Selector de cantidad*/}
-            <ColorSelectorProducts colors={product.ColorForProduct} productId=""></ColorSelectorProducts>
+            {
+                posted && !color && (
+                    <p className="mt-2 text-red-500 fade-in">
+                        debe seleccionar un color *
+                    </p>
+                )
+            }
+            <ColorSelectorProducts availableColors={product.ColorForProduct} onColorChange={(color) => setcolor(color)} selectorColor={color}></ColorSelectorProducts>
             <QuantitySelector quatity={quantity}
                 QuantityChanged={setQuantity}
             />

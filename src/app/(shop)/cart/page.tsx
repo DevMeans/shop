@@ -1,16 +1,7 @@
 import { Title } from '@/components';
 import Link from 'next/link';
-import { initialData } from '@/seed/seed';
 import { ProductsInCart } from './ui/ProductsInCart';
 import { OrderSumary } from './ui/OrderSumary';
-
-
-const productsInCart = [
-    initialData.products[0],
-    initialData.products[1],
-    initialData.products[2],
-]
-
 export default function CartPage() {
     return (
         <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
