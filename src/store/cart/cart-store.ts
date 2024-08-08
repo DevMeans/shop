@@ -26,23 +26,30 @@ export const useCartStore = create<State>()(
                 return cart.reduce((total, item) => total + item.quantity, 0)
             },
             addProductCart(product: CartProduct) {
-                const { cart } = get()
-                //revisar si ese productoe existe
+                const { cart } = get();
+                // Revisar si ese producto existe por color y talla
                 const productInCart = cart.some(
-                    (item) => item.id === product.id && item.size === product.size
-                )
+                    (item) => item.id === product.id && item.size === product.size && item.detalles.color.id === product.detalles.color.id
+                );
                 if (!productInCart) {
-                    set({ cart: [...cart, product] })
-                    return
+                    set({ cart: [...cart, product] });
+                    return;
                 }
-                //producto existe por talla entonces ingrementar la cantidad 
-                const updateCarProduct = cart.map((item) => {
-                    if (item.id === product.id && item.size === product.size) {
-                        return { ...item, quantity: item.quantity + product.quantity }
+                // Producto existe por color y talla entonces incrementar la cantidad
+                const updateCartProduct = cart.map((item) => {
+                    if (item.id === product.id && item.size === product.size && item.detalles.color.id === product.detalles.color.id) {
+                        return { 
+                            ...item, 
+                            quantity: item.quantity + product.quantity,
+                            detalles: {
+                                ...item.detalles,
+                                cantidad: item.detalles.cantidad + product.detalles.cantidad
+                            }
+                        };
                     }
-                    return item
-                })
-                set({ cart: updateCarProduct })
+                    return item;
+                });
+                set({ cart: updateCartProduct });
             },
             updateProductCart: (product: CartProduct, quantity: number) => {
                // console.log({ product, quantity })

@@ -44,7 +44,7 @@ export interface CartProduct {
   quantity: number;
   size: Size;
   image: string;
-  color: any;
+  detalles: any;
 }
 export interface ColorForProduct {
   id: string;

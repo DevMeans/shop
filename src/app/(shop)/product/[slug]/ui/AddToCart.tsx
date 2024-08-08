@@ -29,13 +29,14 @@ export const AddToCart = ({ product }: Props) => {
             quantity: quantity,
             size: size,
             image: product.images[0],
-            color: {
+            detalles: {
+                talla: size,
                 cantidad: quantity,
                 color: color
             }
-
+            //TODO: ordenar bien esto 
         }
-        console.info('CartProduct',cartProduct)
+        console.info('CartProduct', cartProduct)
         addProductToCart(cartProduct)
         setPosted(false)
         setQuantity(1)

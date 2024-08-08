@@ -19,9 +19,94 @@ export const ProductsInCart = () => {
     if (!loaded) {
         return <p>loding...</p>
     }
+
+    // Paso 1: Crear un objeto para agrupar los productos por 'id'
+    const groupedById = productsInCart.reduce((acc: any, product) => {
+        if (!acc[product.id]) {
+            acc[product.id] = {
+                id: product.id,
+                slug: product.slug,
+                title: product.title,
+                price: product.price,
+                image: product.image,
+                detalles: []
+            };
+        }
+        acc[product.id].detalles.push(product.detalles);
+        return acc;
+    }, {});
+
+    // Paso 2: Agrupar los detalles por 'talla' para cada producto
+    const results = Object.values(groupedById).map((product: any) => {
+        const groupedDetalles = product.detalles.reduce((acc: any, detalle: any) => {
+            const { talla } = detalle;
+            if (!acc[talla]) {
+                acc[talla] = [];
+            }
+            acc[talla].push(detalle);
+            return acc;
+        }, {});
+
+        // Convertir a un arreglo de objetos con 'talla' y 'detalles'
+        product.detalles = Object.entries(groupedDetalles).map(([talla, items]) => ({
+            talla,
+            items
+        }));
+
+        return product;
+    });
+
+    console.log(results);
+    console.log(productsInCart)
     return (
         <>
             {
+                results.map((productCard) => {
+                    return <div key={productCard.id}>
+                        <h2>{productCard.title}</h2>
+                        <ProductImage
+                            src={productCard.image}
+                            width={100}
+                            height={100}
+                            alt={productCard.title}
+                            className='mr-5 rounded'
+                        />
+                        <div>
+                            {
+                                productCard.detalles.map((detalle: any) => {
+                                    console.log(detalle)
+                                    return <div key={detalle.talla}>
+                                        <div className='flex gap-3 mb-2 items-center'>
+                                            <div className='font-extrabold text-xl'>
+                                                {detalle.talla}
+                                            </div>
+
+                                            <div className='flex '>
+                                                {
+                                                    detalle.items.map((item: any) => {
+                                                        return (
+                                                            <div key={item.color.id} className='flex items-center gap-3'>
+                                                                <div className='size-10 rounded-md' style={{ backgroundColor: `${item.color.hexa}` }}>
+
+                                                                </div>
+                                                                <div className='mr-3'>
+                                                                    <input type="text"  value={item.cantidad} className='bg-white size-10 text-center rounded-md font-bold'/>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                })
+                            }
+                        </div>
+                    </div>
+                })
+
+            }
+            {/*
                 productsInCart.map(product => (
                     <div key={`${product.slug}-${product.size}`} className='flex mb-5'>
                         <ProductImage
@@ -35,7 +120,9 @@ export const ProductsInCart = () => {
                             <Link href={`/product/${product.slug}`} className='hover:underline cursor-pointer'>
                                 <p>{product.title}</p>
                             </Link>
-
+                            {
+                                
+                            }
                             <p>{product.price}</p>
                             <QuantitySelector quatity={product.quantity} QuantityChanged={quantity => updateProduct(product, quantity)} ></QuantitySelector>
                             <button className='underline mt-3' onClick={() => removeProduct(product)}>
@@ -44,7 +131,8 @@ export const ProductsInCart = () => {
                         </div>
                     </div>
                 ))
-            }
+
+            */}
         </>
     )
 }
