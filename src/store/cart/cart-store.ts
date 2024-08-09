@@ -74,6 +74,9 @@ export const useCartStore = create<State>()(
         size: string,
         colorid: string
       ) => {
+        if(isNaN(cantidad)){
+          cantidad=0
+        }
         // console.log({ product, quantity })
         const { cart } = get();
         const updateCartProducts = cart.map((item) => {
