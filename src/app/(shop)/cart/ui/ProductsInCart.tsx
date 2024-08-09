@@ -55,9 +55,11 @@ export const ProductsInCart = () => {
 
         return product;
     });
+    const handleQuantityChange = (ProductId: string, cantidad: number, size: string, colorid: string) => {
+        updateProduct(ProductId, cantidad, size, colorid)
+    }
 
-    console.log(results);
-    console.log(productsInCart)
+    console.log(results)
     return (
         <>
             {
@@ -90,7 +92,7 @@ export const ProductsInCart = () => {
 
                                                                 </div>
                                                                 <div className='mr-3'>
-                                                                    <input type="text"  value={item.cantidad} className='bg-white size-10 text-center rounded-md font-bold'/>
+                                                                    <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-10 text-center rounded-md font-bold' />
                                                                 </div>
                                                             </div>
                                                         )
@@ -104,35 +106,7 @@ export const ProductsInCart = () => {
                         </div>
                     </div>
                 })
-
             }
-            {/*
-                productsInCart.map(product => (
-                    <div key={`${product.slug}-${product.size}`} className='flex mb-5'>
-                        <ProductImage
-                            src={product.image}
-                            width={100}
-                            height={100}
-                            alt={product.title}
-                            className='mr-5 rounded'
-                        />
-                        <div>
-                            <Link href={`/product/${product.slug}`} className='hover:underline cursor-pointer'>
-                                <p>{product.title}</p>
-                            </Link>
-                            {
-                                
-                            }
-                            <p>{product.price}</p>
-                            <QuantitySelector quatity={product.quantity} QuantityChanged={quantity => updateProduct(product, quantity)} ></QuantitySelector>
-                            <button className='underline mt-3' onClick={() => removeProduct(product)}>
-                                Remover
-                            </button>
-                        </div>
-                    </div>
-                ))
-
-            */}
         </>
     )
 }

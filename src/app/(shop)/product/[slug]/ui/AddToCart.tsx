@@ -41,7 +41,7 @@ export const AddToCart = ({ product }: Props) => {
         setPosted(false)
         setQuantity(1)
         setSize(undefined)
-        setcolor(undefined)
+        setcolor(undefined)//TODO: VER TODO ESTO 
     }
 
     return (
@@ -60,7 +60,7 @@ export const AddToCart = ({ product }: Props) => {
                 availableSizes={product.sizes} />
             {/*Selector de cantidad*/}
             {
-                posted && !color && (
+                !posted && !color && (
                     <p className="mt-2 text-red-500 fade-in">
                         debe seleccionar un color *
                     </p>
