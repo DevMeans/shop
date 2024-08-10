@@ -5,9 +5,9 @@ import { OrderSumary } from './ui/OrderSumary';
 export default function CartPage() {
     return (
         <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
-            <div className="flex flex-col w-[1000px]">
+            <div className="flex flex-col w-[1300px]">
                 <Title title='Carrito' />
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
+                <div className=''>
                     <div className='flex flex-col mt-3'>
                         <span className='text-xl'>Agregar mas items</span>
                         <Link href="/" className="underline mb-5" >
@@ -18,7 +18,9 @@ export default function CartPage() {
                         <ProductsInCart />
                     </div>
                     {/* Checkout*/}
-                    <div className='bg-white rounded-xl shadow-xl p-7 h-fit'>
+
+                    {
+                        /**                    <div className='bg-white rounded-xl shadow-xl p-7 h-fit'>
                         <h2 className='text-2xl'>
                             Resumen de orden
                         </h2>
@@ -30,7 +32,9 @@ export default function CartPage() {
                                 Checkout
                             </Link>
                         </div>
-                    </div>
+                    </div> */
+                    }
+
                 </div>
             </div>
         </div>

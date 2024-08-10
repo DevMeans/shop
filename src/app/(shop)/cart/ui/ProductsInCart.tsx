@@ -64,35 +64,42 @@ export const ProductsInCart = () => {
         <>
             {
                 results.map((productCard) => {
-                    return <div key={productCard.id}>
-                        <h2>{productCard.title}</h2>
-                        <ProductImage
-                            src={productCard.image}
-                            width={100}
-                            height={100}
-                            alt={productCard.title}
-                            className='mr-5 rounded'
-                        />
-                        <div>
+                    const totalItems = productCard.detalles.reduce((acc: number, detalle: any) => {
+                        return acc + detalle.items.reduce((accItems: number, item: any) => accItems + item.cantidad, 0);
+                    }, 0);
+                    return <div key={productCard.id} className='flex flex-col sm:flex-row bg-slate-300 m-4'>
+                        <div className='ms:max-w-40 p-5 max-w-36'>
+                            <h2>{productCard.title}</h2>
+                            <ProductImage
+                                src={productCard.image}
+                                width={200}
+                                height={200}
+                                alt={productCard.title}
+                                className='mr-5 rounded'
+                            />
+                        </div>
+
+
+                        <div className='p-5 overflow-auto'>
                             {
                                 productCard.detalles.map((detalle: any) => {
                                     console.log(detalle)
                                     return <div key={detalle.talla}>
                                         <div className='flex gap-3 mb-2 items-center'>
-                                            <div className='font-extrabold text-xl'>
+                                            <div className='font-extrabold text-base sm:text-xl'>
                                                 {detalle.talla}
                                             </div>
 
-                                            <div className='flex '>
+                                            <div className='flex'>
                                                 {
                                                     detalle.items.map((item: any) => {
                                                         return (
                                                             <div key={item.color.id} className='flex items-center gap-3'>
-                                                                <div className='size-10 rounded-md' style={{ backgroundColor: `${item.color.hexa}` }}>
+                                                                <div className='size-7 sm:size-10 rounded-md' style={{ backgroundColor: `${item.color.hexa}` }}>
 
                                                                 </div>
                                                                 <div className='mr-3'>
-                                                                    <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-10 text-center rounded-md font-bold' />
+                                                                    <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-7 sm:size-10 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
                                                                 </div>
                                                             </div>
                                                         )
@@ -103,6 +110,19 @@ export const ProductsInCart = () => {
                                     </div>
                                 })
                             }
+                        </div>
+                        <div className='p-5 border-2 mb-5 sm:m-auto'>
+                            <div>
+                                Total : {totalItems}
+                            </div>
+
+                            <div>
+                                Precio Producto: {productCard.price}
+                            </div>
+                            <div>
+                                Total : {totalItems * productCard.price}
+                            </div>
+
                         </div>
                     </div>
                 })

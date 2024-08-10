@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 export const OrderSumary = () => {
     const [loaded, setLoaded] = useState(false)
     const { itemsInCart, subTotaly, tax, total } = useCartStore(state => state.getSumaryInformation())
+   
     useEffect(() => {
         setLoaded(true)
 
