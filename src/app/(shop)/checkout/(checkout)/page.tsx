@@ -17,7 +17,7 @@ export default function checkout () {
         <Title title='Verificar orden' />
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+        <div className="">
 
           {/* Carrito */ }
           <div className="flex flex-col mt-5">
@@ -25,9 +25,6 @@ export default function checkout () {
             <Link href="/cart" className="underline mb-5">
               Editar carrito
             </Link>
-
-
-
             {/* Items */ }
             <ProductsInCart></ProductsInCart>
           </div>
@@ -38,7 +35,7 @@ export default function checkout () {
           {/* Checkout - Resumen de orden */ }
  
 
-        <PlaceOrder></PlaceOrder>
+      
 
         </div>
 

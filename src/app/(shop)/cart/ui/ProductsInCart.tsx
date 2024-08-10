@@ -19,7 +19,6 @@ export const ProductsInCart = () => {
     if (!loaded) {
         return <p>loding...</p>
     }
-
     // Paso 1: Crear un objeto para agrupar los productos por 'id'
     const groupedById = productsInCart.reduce((acc: any, product) => {
         if (!acc[product.id]) {
@@ -35,7 +34,6 @@ export const ProductsInCart = () => {
         acc[product.id].detalles.push(product.detalles);
         return acc;
     }, {});
-
     // Paso 2: Agrupar los detalles por 'talla' para cada producto
     const results = Object.values(groupedById).map((product: any) => {
         const groupedDetalles = product.detalles.reduce((acc: any, detalle: any) => {
@@ -58,10 +56,26 @@ export const ProductsInCart = () => {
     const handleQuantityChange = (ProductId: string, cantidad: number, size: string, colorid: string) => {
         updateProduct(ProductId, cantidad, size, colorid)
     }
+    // Calculate total cost of all products
+    const totalCartCost = results.reduce((acc: number, productCard: any) => {
+        const totalItems = productCard.detalles.reduce((acc: number, detalle: any) => {
+            return acc + detalle.items.reduce((accItems: number, item: any) => accItems + item.cantidad, 0);
+        }, 0);
+        return acc + (totalItems * productCard.price);
+    }, 0);
 
     console.log(results)
     return (
         <>
+            <div className='flex justify-evenly'>
+                <div className='text-xl font-bold'>
+                    TOTAL :s/ {totalCartCost}
+                </div>
+                <div>
+
+                    <Link href="/checkout/address" className='bg-blue-500 p-2 rounded-md text-white'>Hacer pedido</Link>
+                </div>
+            </div>
             {
                 results.map((productCard) => {
                     const totalItems = productCard.detalles.reduce((acc: number, detalle: any) => {
@@ -78,18 +92,15 @@ export const ProductsInCart = () => {
                                 className='mr-5 rounded'
                             />
                         </div>
-
-
                         <div className='p-5 overflow-auto'>
                             {
                                 productCard.detalles.map((detalle: any) => {
                                     console.log(detalle)
                                     return <div key={detalle.talla}>
                                         <div className='flex gap-3 mb-2 items-center'>
-                                            <div className='font-extrabold text-base sm:text-xl'>
+                                            <div className='font-extrabold text-base sm:text-xl w-9'>
                                                 {detalle.talla}
                                             </div>
-
                                             <div className='flex'>
                                                 {
                                                     detalle.items.map((item: any) => {
@@ -117,12 +128,11 @@ export const ProductsInCart = () => {
                             </div>
 
                             <div>
-                                Precio Producto: {productCard.price}
+                                Precio Producto: S/ {productCard.price}
                             </div>
                             <div>
-                                Total : {totalItems * productCard.price}
+                                Total : S/ {totalItems * productCard.price}
                             </div>
-
                         </div>
                     </div>
                 })

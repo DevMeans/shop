@@ -4,7 +4,7 @@ import { auth } from "@/auth.config";
 import type { Size } from "@/interfaces";
 import type { Address } from "@/interfaces/address.interface";
 import { revalidatePath } from "next/cache";
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
 
 interface producToOrder {
   productId: string;
@@ -126,7 +126,7 @@ export const placeOrder = async (
       prismaTx: prismaTx,
     };
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return {
       ok: false,
       message: error?.message,
