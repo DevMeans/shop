@@ -73,7 +73,7 @@ export const ProductsInCart = () => {
                 </div>
                 <div>
 
-                    <Link href="/checkout/address" className='bg-blue-500 p-2 rounded-md text-white'>Hacer pedido</Link>
+                    <Link href="/checkout/address" className='bg-blue-500 p-2 rounded-md text-white'>Procesar pedido</Link>
                 </div>
             </div>
             {

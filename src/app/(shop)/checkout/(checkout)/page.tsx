@@ -4,6 +4,7 @@ import {Title } from '@/components';
 
 import { ProductsInCart } from './ui/ProductsInCart';
 import { PlaceOrder } from './ui/PlaceOrder';
+import { placeOrder } from '../../../../actions/order/place-order';
 
 
 
@@ -26,6 +27,10 @@ export default function checkout () {
               Editar carrito
             </Link>
             {/* Items */ }
+            <PlaceOrder></PlaceOrder>
+            <div className='h-4'>
+
+            </div>
             <ProductsInCart></ProductsInCart>
           </div>
 

@@ -16,31 +16,13 @@ export const PlaceOrder = () => {
     const [errorMessage, setErrorMessage] = useState('')
 
     const address = useAddressStore(state => state.address)
-    const { itemsInCart, subTotaly, tax, total } = useCartStore(state => state.getSumaryInformation())
     const cart = useCartStore(state => state.cart)
     const clearCart = useCartStore(state => state.clearCart)
     useEffect(() => {
         setLoaded(true)
 
     }, [])
-    const onPlaceOrder = async () => {
-        setPlacingOrder(true);
-        const productToOrder = cart.map(product => ({
-            productId: product.id,
-            quantity: product.quantity,
-            size: product.size
-        }))
 
-        const resp = await placeOrder(productToOrder, address)
-        if (!resp.ok) {
-            setPlacingOrder(false)
-            setErrorMessage(resp.message)
-            return;
-        }
-        //* Todo salio bien
-        clearCart()
-        router.replace('./orders/' + resp.order!.id)
-    }
     if (!Loaded) {
         return <p>Cargando</p>
     }
@@ -58,53 +40,9 @@ export const PlaceOrder = () => {
                 <p>{address.city} , {address.country}</p>
                 <p>{address.phone}</p>
             </div>
-
             {/* Divider */}
             <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
-
-
             <h2 className="text-2xl mb-2">Resumen de orden</h2>
-
-            <div className="grid grid-cols-2">
-
-                <span>nr.Productos</span>
-                <span className='text-right'>{itemsInCart === 1 ? '1 articulo' : `${itemsInCart} articulos`}</span>
-
-                <span>Subtotal</span>
-                <span className='text-right'>{currencyFormat(subTotaly)}</span>
-
-                <span>Impuestos</span>
-                <span className='text-right'>{currencyFormat(tax)}</span>
-
-                <span className='mt-5 text-2xl'>Total :</span>
-                <span className='mt-5 text-2xl text-right'>{currencyFormat(total)}</span>
-            </div>
-
-            <div className="mt-5 mb-2 w-full">
-
-                <p className="mb-5">
-                    {/* Disclaimer */}
-                    <span className="text-xs">
-                        Al hacer clic en &quot; Colocar orden &quot; , aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad</a>
-                    </span>
-                </p>
-
-                <p className="text-red-500">
-                    {errorMessage}
-                </p>
-                <button onClick={onPlaceOrder}
-                    className={
-                        clsx({
-                            'btn-primary': !isPlacingOrder,
-                            'btn-disable': isPlacingOrder
-                        })
-                    }
-          /*  href="/orders/123"*/>
-                    Colocar orden
-                </button>
-            </div>
-
-
         </div>
     )
 }
