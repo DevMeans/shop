@@ -106,11 +106,10 @@ export const ProductsInCart = () => {
                                                     detalle.items.map((item: any) => {
                                                         return (
                                                             <div key={item.color.id} className='flex items-center gap-3'>
-                                                                <div className='size-7 sm:size-10 rounded-md' style={{ backgroundColor: `${item.color.hexa}` }}>
-
+                                                                <div className='size-7 sm:size-8 rounded-md flex justify-center items-center' style={{ backgroundColor: `${item.color.hexa}` }}>
                                                                 </div>
                                                                 <div className='mr-3'>
-                                                                    <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-7 sm:size-10 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
+                                                                    <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-7 sm:size-8 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
                                                                 </div>
                                                             </div>
                                                         )

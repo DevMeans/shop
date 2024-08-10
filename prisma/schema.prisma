@@ -101,12 +101,9 @@ model UserAddress {
 
 model Order {
   id           String        @id @default(uuid())
-  subTotal     Float
-  tax          Float
   total        Float
   itemsInOrder Int
   isPaid       Boolean       @default(false)
-  paidAt       DateTime?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   // Relaciones
@@ -117,15 +114,17 @@ model Order {
 }
 
 model OrderItem {
-  id        String  @id @default(uuid())
+  id        String       @id @default(uuid())
   quantity  Int
   price     Float
   size      Size
   // Relaciones
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order        @relation(fields: [orderId], references: [id])
   orderId   String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product      @relation(fields: [productId], references: [id])
   productId String
+  color     ColorProduct @relation(fields: [colorId], references: [id])
+  colorId   String
 }
 
 model OrderAddress {
@@ -150,6 +149,7 @@ model ColorProduct {
   hexa            String?
   estado          Int
   ColorForProduct ColorForProduct[]
+  OrderItem       OrderItem[]
 }
 
 model ColorForProduct {

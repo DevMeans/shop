@@ -1,8 +1,10 @@
 'use client'
 import { ProductImage, QuantitySelector } from '@/components'
-import { useCartStore } from '@/store'
+import { useAddressStore, useCartStore } from '@/store'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
+import { postPlaceOrder } from '@/actions/order/post-place-order';
+import { Size } from '@/interfaces';
 
 
 export const ProductsInCart = () => {
@@ -12,6 +14,7 @@ export const ProductsInCart = () => {
     console.log(productsInCart)
     const updateProduct = useCartStore(state => state.updateProductCart)
     const removeProduct = useCartStore(state => state.removeProduct)
+    const address = useAddressStore(state => state.address)
     useEffect(() => {
         setLoaded(true)
     }, [])
@@ -53,9 +56,6 @@ export const ProductsInCart = () => {
 
         return product;
     });
-    const handleQuantityChange = (ProductId: string, cantidad: number, size: string, colorid: string) => {
-        updateProduct(ProductId, cantidad, size, colorid)
-    }
     // Calculate total cost of all products
     const totalCartCost = results.reduce((acc: number, productCard: any) => {
         const totalItems = productCard.detalles.reduce((acc: number, detalle: any) => {
@@ -63,8 +63,21 @@ export const ProductsInCart = () => {
         }, 0);
         return acc + (totalItems * productCard.price);
     }, 0);
+    // console.log(results)
 
-    console.log(results)
+    const transformedArray = productsInCart.map(item => ({
+        productId: item.id,
+        cantidad: item.detalles.cantidad,
+        size: item.size as Size,
+        colorId: item.detalles.color.id
+    }));
+    const placeOrder = async () => {
+        const guardarordrrt = await postPlaceOrder(transformedArray, address)
+        console.log(guardarordrrt)
+    }
+
+    console.log('objeto transformado', transformedArray);
+
     return (
         <>
             <div className='flex justify-evenly'>
@@ -73,7 +86,7 @@ export const ProductsInCart = () => {
                 </div>
                 <div>
 
-                    <Link href="/checkout/address" className='bg-blue-500 p-2 rounded-md text-white'>Hacer pedido</Link>
+                    <button className='bg-blue-500 p-2 rounded-md text-white' onClick={placeOrder}>Hacer pedido</button>
                 </div>
             </div>
             {
@@ -107,7 +120,6 @@ export const ProductsInCart = () => {
                                                         return (
                                                             <div key={item.color.id} className='flex items-center gap-3'>
                                                                 <div className='size-7 sm:size-10 rounded-md' style={{ backgroundColor: `${item.color.hexa}` }}>
-
                                                                 </div>
                                                                 <div className='mr-3'>
                                                                     <input type="text" readOnly value={item.cantidad} className='bg-white size-7 sm:size-10 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
