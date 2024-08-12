@@ -31,22 +31,37 @@ export const postPlaceOrder = async (
       },
     },
   });
+  console.log(products);
   try {
     const prismaTx = await prisma.$transaction(async (tx) => {
-      // Primero, crea la orden
+      let totalPrice = 0;
+      let totalItems = 0;
+
+      const orderItems = productToOrderId.map((item) => {
+        const product = products.find((p) => p.id === item.productId);
+        const price = product?.price ?? 0;
+        const itemTotalPrice = price * item.cantidad;
+
+        totalPrice += itemTotalPrice;
+        totalItems += item.cantidad;
+
+        return {
+          productId: item.productId,
+          quantity: item.cantidad,
+          size: item.size,
+          colorId: item.colorId,
+          price: price,
+        };
+      });
+
+      // Crear la orden
       const order = await tx.order.create({
         data: {
           userId,
-          total: products.reduce((acc, product) => acc + product.price, 0),//TODO : ESTO ESTA MAL
-          itemsInOrder: productToOrderId.length, //TODO: ESTO TAMBIEN :
+          total: totalPrice,
+          itemsInOrder: totalItems,
           OrderItem: {
-            create: productToOrderId.map((item) => ({
-              productId: item.productId,
-              quantity: item.cantidad,
-              size: item.size,
-              colorId: item.colorId,
-              price: products.find((p) => p.id === item.productId)?.price ?? 0,
-            })),
+            create: orderItems,
           },
         },
       });
