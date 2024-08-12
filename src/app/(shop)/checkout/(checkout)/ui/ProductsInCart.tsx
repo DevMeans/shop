@@ -17,6 +17,7 @@ export const ProductsInCart = () => {
     const updateProduct = useCartStore(state => state.updateProductCart)
     const removeProduct = useCartStore(state => state.removeProduct)
     const address = useAddressStore(state => state.address)
+    const clearCart = useCartStore(state => state.clearCart);
     useEffect(() => {
         setLoaded(true)
     }, [])
@@ -76,7 +77,13 @@ export const ProductsInCart = () => {
     const placeOrder = async () => {
         const resp = await postPlaceOrder(transformedArray, address)
         console.log(resp)
+
+        if (!resp.ok) {
+            return;
+        }
+        clearCart();
         router.replace('/orders/' + resp.order?.id);
+
     }
 
     console.log('objeto transformado', transformedArray);

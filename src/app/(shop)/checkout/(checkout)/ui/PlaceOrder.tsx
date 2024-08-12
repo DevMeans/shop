@@ -1,6 +1,6 @@
 'use client'
 
-import { placeOrder } from "@/actions/order/place-order"
+
 import { useAddressStore, useCartStore } from "@/store"
 import { currencyFormat, sleep } from "@/util"
 import clsx from "clsx"
