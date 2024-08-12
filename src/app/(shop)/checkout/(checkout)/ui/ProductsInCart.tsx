@@ -85,9 +85,6 @@ export const ProductsInCart = () => {
         router.replace('/orders/' + resp.order?.id);
 
     }
-
-    console.log('objeto transformado', transformedArray);
-
     return (
         <>
             <div className='flex justify-evenly'>
@@ -134,6 +131,7 @@ export const ProductsInCart = () => {
                                                                 <div className='mr-3'>
                                                                     <input type="text" readOnly value={item.cantidad} className='bg-white size-7 sm:size-10 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
                                                                 </div>
+                                                        
                                                             </div>
                                                         )
                                                     })

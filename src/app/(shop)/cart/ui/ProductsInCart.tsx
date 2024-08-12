@@ -63,7 +63,11 @@ export const ProductsInCart = () => {
         }, 0);
         return acc + (totalItems * productCard.price);
     }, 0);
+    const eliminarColor = (color: string, idProducto: string, talla: string) => {
+        console.log(color, idProducto, talla) //TODO :ELIMINAR TALLA
 
+        removeProduct(color, idProducto, talla)
+    }
     console.log(results)
     return (
         <>
@@ -106,9 +110,11 @@ export const ProductsInCart = () => {
                                                     detalle.items.map((item: any) => {
                                                         return (
                                                             <div key={item.color.id} className='flex items-center gap-3'>
-                                                                <div className='size-7 sm:size-8 rounded-md flex justify-center items-center' style={{ backgroundColor: `${item.color.hexa}` }}>
+                                                                <div
+                                                                    onClick={() => { eliminarColor(item.color.id, productCard.id, item.talla) }}
+                                                                    className='size-7 sm:size-8 rounded-md flex justify-center items-center cursor-pointer' style={{ backgroundColor: `${item.color.hexa}` }}>
                                                                 </div>
-                                                                <div className='mr-3'>
+                                                                <div className=''>
                                                                     <input type="text" onChange={(e) => handleQuantityChange(productCard.id, parseInt(e.target.value), item.talla, item.color.id)} value={item.cantidad} className='bg-white size-7 sm:size-8 text-center rounded-md font-bold' style={{ color: `${item.color.hexa}` }} />
                                                                 </div>
                                                             </div>

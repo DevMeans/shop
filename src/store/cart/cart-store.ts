@@ -18,7 +18,7 @@ interface State {
     size: string,
     colorid: string
   ) => void;
-  removeProduct: (product: CartProduct) => void;
+  removeProduct: (color: string, idProducto: string, talla: string) => void;
   clearCart: () => void;
 }
 
@@ -94,13 +94,24 @@ export const useCartStore = create<State>()(
         });
         set({ cart: updateCartProducts });
       },
-      removeProduct: (product: CartProduct) => {
+      removeProduct: (color: string, idProducto: string, talla: string) => {
+      //  const { cart } = get();
+
+        //const removeProduct = cart.filter(
+         // (item) => item.id !== product.id || item.size !== product.size
+        //);
+       // set({ cart: removeProduct });
+
+
         const { cart } = get();
 
-        const removeProduct = cart.filter(
-          (item) => item.id !== product.id || item.size !== product.size
+        const nuevoCart = cart.filter(
+          (item) =>
+            !(item.detalles.color.id === color && item.id === idProducto && item.detalles.talla === talla)
         );
-        set({ cart: removeProduct });
+      
+        set({ cart: nuevoCart });
+        console.log("Producto eliminado:", color, idProducto, talla);
       },
       getSumaryInformation() {
         const { cart } = get();

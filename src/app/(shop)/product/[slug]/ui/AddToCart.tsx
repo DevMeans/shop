@@ -48,7 +48,7 @@ export const AddToCart = ({ product }: Props) => {
         <>
 
             {
-                posted && !size && (
+                !posted && !size && (
                     <p className="mt-2 text-red-500 fade-in">
                         debe seleccionar una talla *
                     </p>
