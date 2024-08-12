@@ -9,6 +9,7 @@ import { IoCardOutline } from 'react-icons/io5';
 
 export default async function orders() {
   const { ok, orders = [] } = await getOrdersByUser();
+  console.log(orders)
   //TODO : CUANDO VUELVES DEL PEDIDO NO SE VEN LOS PEDIDOS HECHOS A MENOS QUE REFRESQUES LA PAGINA
   if (!ok) {
     redirect('/auth/login')

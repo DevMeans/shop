@@ -3,6 +3,7 @@ import { auth } from "@/auth.config";
 import { Size } from "@/interfaces";
 import { Address } from "@/interfaces/address.interface";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 interface ProductToOrder {
   productId: string;
@@ -85,6 +86,7 @@ export const postPlaceOrder = async (
       return order;
     });
     console.log("transaccion hecha");
+    revalidatePath(`orders`)
     return {
       ok: true,
       order: prismaTx,
