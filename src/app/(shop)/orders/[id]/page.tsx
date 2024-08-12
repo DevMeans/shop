@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Title } from '@/components';
+import { ProductImage, Title } from '@/components';
 import { initialData } from '@/seed/seed';
 import Image from 'next/image';
 import clsx from 'clsx';
@@ -33,7 +33,7 @@ export default async function OrderID({ params }: Props) {
     redirect('/')
   }
   const address = order!.OrderAddress
-  console.log(order)
+  console.log('order', order?.OrderItem)
   // Todo: verificar
   // redirect(/)
 
@@ -50,20 +50,12 @@ export default async function OrderID({ params }: Props) {
           {/* Carrito */}
           <div className="flex flex-col mt-5">
 
-            <div className={
-              clsx(
-                "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                {
-                  'bg-red-500': !order!.isPaid,
-                  'bg-green-700': order!.isPaid,
-                }
-              )
-            }>
+            <div className="flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5 bg-green-600">
               <IoCardOutline size={30} />
               {/* <span className="mx-2">Pendiente de pago</span> */}
-              <span className="mx-2">{
-                order!.isPaid ? 'Pagada' : 'No pagada'
-              }</span>
+              <span className="mx-2">
+                Orden procesada
+              </span>
             </div>
 
 
@@ -73,22 +65,18 @@ export default async function OrderID({ params }: Props) {
               order?.OrderItem.map(item => (
 
                 <div key={item.product.slug + item.size} className="flex mb-5">
-                  <Image
-                    src={`/products/${item.product.ProductImage[0].url}`}
+                  <ProductImage
+                    src={item.product.ProductImage[0].url}
                     width={100}
                     height={100}
-                    style={{
-                      width: '100px',
-                      height: '100px'
-                    }}
                     alt={item.product.title}
                     className="mr-5 rounded"
                   />
 
                   <div>
                     <p>{item.product.title}</p>
-                    <p>${item.price} x {item.quantity}</p>
-                    <p className="font-bold">Subtotal: ${currencyFormat(item.price * item.quantity)}</p>
+                    <div className='flex'>S/{item.price} x {item.quantity}</div> <span className='flex gap-2 items-center'>Talla {item.size}, color {item.color.name}<div  style={{ backgroundColor: `${item.color.hexa}` }} className='size-4 mb-0'></div></span>
+                    <p className="font-bold">Subtotal: S/{(item.price * item.quantity)}</p>
                   </div>
 
                 </div>
@@ -107,7 +95,7 @@ export default async function OrderID({ params }: Props) {
             <h2 className="text-2xl mb-2">Dirección de entrega</h2>
             <div className="mb-10">
               <p className="text-xl">{
-                address?.firstName ? address?.firstName :'No name'
+                address?.firstName ? address?.firstName : 'No name'
               } {address?.lastName}</p>
               <p>{address?.address}</p>
               <p>{address?.address2}</p>
@@ -125,13 +113,6 @@ export default async function OrderID({ params }: Props) {
             <div className="grid grid-cols-2">
               <span>nr.Productos</span>
               <span className='text-right'>{order!.itemsInOrder === 1 ? '1 articulo' : `${order!.itemsInOrder} articulos`}</span>
-
-              <span>Subtotal</span>
-              <span className='text-right'>{currencyFormat(order!.subTotal)}</span>
-
-              <span>Impuestos</span>
-              <span className='text-right'>{currencyFormat(order!.tax)}</span>
-
               <span className='mt-5 text-2xl'>Total :</span>
               <span className='mt-5 text-2xl text-right'>{currencyFormat(order!.total)}</span>
 
@@ -139,18 +120,10 @@ export default async function OrderID({ params }: Props) {
 
             <div className="mt-5 mb-2 w-full">
 
-              <div className={
-                clsx(
-                  "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                  {
-                    'bg-red-500': !order!.isPaid,
-                    'bg-green-700': order!.isPaid,
-                  }
-                )
-              }>
+              <div className='flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5 bg-green-600'>
                 <IoCardOutline size={30} />
                 {/* <span className="mx-2">Pendiente de pago</span> */}
-                <span className="mx-2">Pagada</span>
+                <span className="mx-2">Orden procesada</span>
               </div>
 
             </div>
@@ -167,6 +140,6 @@ export default async function OrderID({ params }: Props) {
       </div>
 
 
-    </div>
+    </div >
   );
 }

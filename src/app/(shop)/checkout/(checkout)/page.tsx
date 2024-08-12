@@ -4,8 +4,6 @@ import {Title } from '@/components';
 
 import { ProductsInCart } from './ui/ProductsInCart';
 import { PlaceOrder } from './ui/PlaceOrder';
-import { placeOrder } from '../../../../actions/order/place-order';
-
 
 
 

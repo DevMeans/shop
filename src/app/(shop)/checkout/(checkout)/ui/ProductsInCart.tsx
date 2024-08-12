@@ -5,9 +5,11 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { postPlaceOrder } from '@/actions/order/post-place-order';
 import { Size } from '@/interfaces';
+import { useRouter } from 'next/navigation';
 
 
 export const ProductsInCart = () => {
+    const router = useRouter();
     const [loaded, setLoaded] = useState(false)
 
     const productsInCart = useCartStore(state => state.cart)
@@ -72,8 +74,9 @@ export const ProductsInCart = () => {
         colorId: item.detalles.color.id
     }));
     const placeOrder = async () => {
-        const guardarordrrt = await postPlaceOrder(transformedArray, address)
-        console.log(guardarordrrt)
+        const resp = await postPlaceOrder(transformedArray, address)
+        console.log(resp)
+        router.replace('/orders/' + resp.order?.id);
     }
 
     console.log('objeto transformado', transformedArray);
